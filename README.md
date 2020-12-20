@@ -1,4 +1,4 @@
-# RateMyLandLord
+# RateMyLandlord
 
 A simple web app to for college students to find cheap affordable off-campus housing. RML is inspired by RateMyProfessor in the sense of commuity review. Post houses you've lived in and look at other peoples experiences at that house. Lastly, get connected with a landlord.
 
