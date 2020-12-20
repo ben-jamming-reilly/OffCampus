@@ -1,6 +1,6 @@
 # RateMyLandLord
 
-A simple web app to rate your landlord and to find housing
+A simple web app to for college students to find cheap affordable off-campus housing. RML is inspired by RateMyProfessor in the sense of commuity review. Post houses you've lived in and look other peoples experiences at that house and then get connected to a landlord.
 
 ## To Configure
 
@@ -12,38 +12,17 @@ A simple web app to rate your landlord and to find housing
   $ npm install
   ```
 
-- Setup the enviroment variables, which are local to your system. In the config/ dir, add a new file named 'default.json'. Put your details where there are [ ]. Should look like this ...
+- Setup enviroment variables, which are local to your system. In the config/ dir, add a new file named 'default.json'. Put your details where there are [ ]. The file should look like this ...
 
   ```json
   {
-    "ssh_host": "ada.gonzaga.edu",
-    "ssh_user": "[SSH_USER_NAME]",
-    "db_host": "cps-database",
+    "db_host": "[DB_IP_ADDRESS]",
     "db_user": "[DB_USER_NAME]",
     "db_password": "[DB_PASSWORD]",
-    "db": "[DB_NAME]"
+    "db": "[DB_NAME]",
+    "jwtSecret": "[JWT_SECRET_PASSPHRASE]"
   }
   ```
-
-- Finally, you need to create a ssh-keys for the app. This will work for linux/macos systems, probably not for Winblows (Windows)
-
-  - Generate a ssh key. Just hit enter when prompted
-
-    ```s
-    $ ssh-keygen
-    ```
-
-  - Now copy this to ada server
-
-    ```s
-    $ ssh-copy-id -i ~/.ssh/id_rsa [SSH_USER_NAME]@ada.gonzaga.edu
-    ```
-
-  - Finally check that this works by ssh-ing into ada. This time, you shouldn't be prompted for a password.
-
-    ```s
-    $ ssh [SSH_USER_NAME]@ada.gonzaga.edu
-    ```
 
 ## To Run
 
