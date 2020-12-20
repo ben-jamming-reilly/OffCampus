@@ -1,0 +1,5 @@
+node_modules/
+uploads/
+!uploads/doesntExist.jpg
+config/*
+!config/.gitkeep
