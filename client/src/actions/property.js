@@ -15,11 +15,11 @@ export const newProperty = (formData, file, history) => async (dispatch) => {
   body.append("data", JSON.stringify(formData));
 
   try {
-    //let res = await axios.post("/api/properties", body, config);
+    let res = await axios.post("/api/properties", body, config);
 
-    history.push(`/property/${formData.address}`);
+    //history.push(`/property/${formData.address}`);
     //res.data.msg
-    dispatch(setAlarm("Hi", "success"));
+    dispatch(setAlarm(res.data.msg, "success"));
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {

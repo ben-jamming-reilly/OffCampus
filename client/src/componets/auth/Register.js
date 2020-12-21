@@ -7,7 +7,6 @@ import { signup } from "../../actions/auth";
 import { setAlarm } from "../../actions/alarm";
 
 // Styling
-
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";

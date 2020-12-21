@@ -26,13 +26,14 @@ const HousePage = ({
 }) => {
   const history = useHistory();
   // This get address from
-  const { address } = useParams();
-  useEffect(() => getHouse(address), [getHouse, address]);
+  const { zip, city, street } = useParams();
+  useEffect(() => getHouse(zip, city, street), [getHouse, zip, city, street]);
 
-  useEffect(() => getReviews(address), [getReviews, address]);
+  //useEffect(() => getReviews(zip, city, street), [getReviews, address]);
 
   return (
     <Fragment>
+      <br />
       <Col />
       <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
         <Row className='float-center'>
@@ -43,23 +44,15 @@ const HousePage = ({
             </Col>
           ) : (
             <Col xs='12'>
-              <House
-                capacity={houses.house.capacity}
-                rent={houses.house.rent}
-                address={houses.house.address}
-                pic={houses.house.file_name}
-                showLink={false}
-              />
+              <House data={houses.house} showLink={false} />
             </Col>
           )}
         </Row>
+        <br />
         <Row>
           {!houses.loading && houses.house && (
             <Col>
-              <Button
-                onClick={(e) => history.push(`/addreview/${address}`)}
-                block
-              >
+              <Button onClick={(e) => history.push(`/`)} block>
                 Leave a Review
               </Button>
             </Col>
@@ -74,12 +67,14 @@ const HousePage = ({
           ) : (
             reviews.reviews.map((r) => (
               <Col xs='12'>
+                {/*
                 <Review
                   data={r}
                   address={address}
                   likeFunc={likeReview}
                   unlikeFunc={unlikeReview}
                 />
+                */}
               </Col>
             ))
           )}

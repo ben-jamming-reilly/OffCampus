@@ -31,10 +31,10 @@ export const searchHouses = (choice) => async (dispatch) => {
   }
 };
 
-export const getHouse = (address) => async (dispatch) => {
+export const getHouse = (zip, city, street) => async (dispatch) => {
   dispatch({ type: LOADING_HOUSES });
   try {
-    let res = await axios.get(`/api/properties/${address}`);
+    let res = await axios.get(`/api/properties/${zip}/${city}/${street}`);
 
     dispatch({
       type: GET_HOUSE,

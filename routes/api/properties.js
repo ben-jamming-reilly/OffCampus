@@ -26,8 +26,8 @@ router.post("/", [auth, uploads.single("image")], async (req, res) => {
 
     await db.query(
       "INSERT INTO Property " +
-        "(street, city, zip, state, rent, capacity, lease_date, file_name) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?); ",
+        "(street, city, zip, state, rent, capacity, file_name) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?); ",
       [
         form.street,
         form.city,
@@ -35,7 +35,6 @@ router.post("/", [auth, uploads.single("image")], async (req, res) => {
         form.state,
         form.rent,
         form.capacity,
-        form.lease_date,
         req.file.filename,
       ]
     );

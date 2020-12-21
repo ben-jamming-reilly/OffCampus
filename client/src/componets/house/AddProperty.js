@@ -9,6 +9,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import InputGroup from "react-bootstrap/InputGroup";
+import Badge from "react-bootstrap/Badge";
 
 import { newProperty } from "../../actions/property";
 
@@ -33,6 +34,7 @@ const AddProperty = ({ newProperty }) => {
 
     if (file) {
       newProperty(formData, file, history);
+      console.log("Heyu");
     }
   };
 
@@ -48,7 +50,10 @@ const AddProperty = ({ newProperty }) => {
       <br />
       <Col />
       <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
-        <Row className='float-center rounded border border-secondary'>
+        <Row className='float-center mx-auto'>
+          <Badge className='float-center display-1' variant='secondary'>
+            Add A New Property
+          </Badge>
           <Form
             onSubmit={(e) => onSubmit(e)}
             style={{
@@ -56,7 +61,7 @@ const AddProperty = ({ newProperty }) => {
               width: "100%",
               border: "",
             }}
-            className='bg-light'
+            className='bg-light float-center rounded border border-secondary'
           >
             <Form.Row>
               <Form.Group as={Col}>
@@ -150,17 +155,24 @@ const AddProperty = ({ newProperty }) => {
               <Col>
                 <Form.Row>
                   <Form.Group as={Col}>
-                    <Form.Control
-                      name='zip'
-                      value={formData.zip}
-                      onChange={(e) => onChange(e)}
-                      placeholder='Zip Code'
-                      type='number'
-                      required
-                      min={0}
-                      max={99999}
-                      step={1}
-                    />
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='basic-addon1'>
+                          Zip Code
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        name='zip'
+                        value={formData.zip}
+                        onChange={(e) => onChange(e)}
+                        placeholder='Zip Code'
+                        type='number'
+                        required
+                        min={0}
+                        max={99999}
+                        step={1}
+                      />
+                    </InputGroup>
                   </Form.Group>
                 </Form.Row>
                 <Form.Row>
@@ -173,7 +185,7 @@ const AddProperty = ({ newProperty }) => {
                       </InputGroup.Prepend>
                       <Form.Control
                         name='rent'
-                        value={formData.rent !== 0 ? formData.rent : "Zip Code"}
+                        value={formData.rent !== 0 ? formData.rent : "Rent"}
                         onChange={(e) => onChange(e)}
                         placeholder='Rent'
                         type='number'
@@ -186,11 +198,35 @@ const AddProperty = ({ newProperty }) => {
                 </Form.Row>
                 <Form.Row>
                   <Form.Group as={Col}>
-                    <Form.File
-                      id='image'
-                      onChange={fileOnChange}
-                      label='Picture of the Property'
-                    />
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text id='basic-addon1'>
+                          <i class='fas fa-users'></i>
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        name='capacity'
+                        value={
+                          formData.capacity !== 0
+                            ? formData.capacity
+                            : "Capacity"
+                        }
+                        onChange={(e) => onChange(e)}
+                        placeholder='Capacity'
+                        type='number'
+                        min={0}
+                        max={99999}
+                        step={1}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Col className='align-text-bottom my-auto pt-2' xs='2'>
+                    <i class='fas fa-image fa-2x'></i>
+                  </Col>
+                  <Form.Group as={Col}>
+                    <Form.File id='image' onChange={fileOnChange} label='' />
                   </Form.Group>
                 </Form.Row>
               </Col>
@@ -200,8 +236,9 @@ const AddProperty = ({ newProperty }) => {
                     style={{
                       minWidth: "10rem",
                       maxWidth: "15rem",
-                      maxHeight: "10rem",
+                      maxHeight: "15rem",
                     }}
+                    rounded
                     src={previewFile}
                   />
                 )}
@@ -221,13 +258,11 @@ const AddProperty = ({ newProperty }) => {
     </Fragment>
   );
 };
-/*
+
 AddProperty.propTypes = {
-  addProperty: PropTypes.func.isRequired,
+  newProperty: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ state });
+const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, { addProperty })(AddProperty);
-*/
-export default AddProperty;
+export default connect(mapStateToProps, { newProperty })(AddProperty);

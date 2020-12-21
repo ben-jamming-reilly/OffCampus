@@ -23,6 +23,8 @@ CREATE TABLE Property (
     zip  INT,
     state VARCHAR(50) NOT NULL,
 
+    bed TINYINT UNSIGNED,
+    bath TINYINT UNSIGNED,
     rent DECIMAL(8,2) UNSIGNED,
     capacity INT,
     file_name VARCHAR(100),

@@ -71,13 +71,7 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
           ) : (
             houses.map((h) => (
               <Col xs='12'>
-                <House
-                  capacity={h.capacity}
-                  rent={h.rent}
-                  address={h.address}
-                  pic={h.file_name}
-                  showLink={true}
-                />
+                <House data={h} showLink={true} />
               </Col>
             ))
           )}
