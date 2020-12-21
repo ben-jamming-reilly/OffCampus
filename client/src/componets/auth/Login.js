@@ -33,7 +33,7 @@ const Login = ({ login }) => {
       <Form
         onSubmit={(e) => onSubmit(e)}
         style={{
-          padding: "5px",
+          padding: "10px",
           width: "100%",
         }}
       >

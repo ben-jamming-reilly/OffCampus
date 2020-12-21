@@ -83,10 +83,12 @@ router.post("/register", async (req, res) => {
     // Confirm that email or user_name have not been registered
     if (rows.length > 0) {
       if (rows[0].user_name === user_name) {
+        console.log("Username collision");
         return res
           .status(400)
           .json({ errors: [{ msg: "Username already taken." }] });
       } else {
+        console.log("Email collision");
         return res
           .status(400)
           .json({ errors: [{ msg: "Email already registered" }] });
@@ -99,7 +101,7 @@ router.post("/register", async (req, res) => {
 
     await db.query(
       "INSERT INTO User (user_id, first_name, last_name, user_name, email, password) " +
-        "VALUES (?, ?, ?, ?); ",
+        "VALUES (?, ?, ?, ?, ?, ?); ",
       [id, first_name, last_name, user_name, email, hashPassword]
     );
 

@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
 
     return res.status(200).json(rows);
   } catch (err) {
-    //console.error(err.message);
+    console.error(err.message);
     return res.status(500).send("Server Error");
   }
 });

@@ -49,9 +49,9 @@ CREATE TABLE Upvote (
     street VARCHAR(50),
     city VARCHAR(50) ,
     zip  INT,
-    upvoter_user_id VARCHAR(50),
+    upvoter_user_id VARCHAR(36),
 
-    PRIMARY KEY (user_id,  street, city, zip, liker_user_id),
+    PRIMARY KEY (user_id,  street, city, zip, upvoter_user_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id),
-    FOREIGN KEY (user_id, address) REFERENCES Review (user_id, address)
+    FOREIGN KEY (user_id, street, city, zip) REFERENCES Review (user_id, street, city, zip)
 );

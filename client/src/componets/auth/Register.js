@@ -14,6 +14,8 @@ import Button from "react-bootstrap/Button";
 
 const Register = ({ signup, setAlarm }) => {
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
     user_name: "",
     email: "",
     password1: "",
@@ -33,6 +35,8 @@ const Register = ({ signup, setAlarm }) => {
     }
 
     const userData = {
+      first_name: formData.first_name,
+      last_name: formData.last_name,
       user_name: formData.user_name,
       email: formData.email,
       password: formData.password1,
@@ -46,17 +50,26 @@ const Register = ({ signup, setAlarm }) => {
       <Form
         onSubmit={(e) => onSubmit(e)}
         style={{
-          padding: "5px",
+          padding: "10px",
           width: "100%",
         }}
       >
         <Form.Row>
           <Form.Group as={Col}>
             <Form.Control
-              name='email'
-              value={formData.email}
+              name='first_name'
+              value={formData.first_name}
               onChange={(e) => onChange(e)}
-              placeholder='Email'
+              placeholder='First Name'
+              required
+            />
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Form.Control
+              name='last_name'
+              value={formData.last_name}
+              onChange={(e) => onChange(e)}
+              placeholder='Last Name'
               required
             />
           </Form.Group>
@@ -73,6 +86,18 @@ const Register = ({ signup, setAlarm }) => {
           </Form.Group>
           <Col />
         </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Control
+              name='email'
+              value={formData.email}
+              onChange={(e) => onChange(e)}
+              placeholder='Email'
+              required
+            />
+          </Form.Group>
+        </Form.Row>
+
         <Form.Row>
           <Form.Group as={Col}>
             <Form.Control

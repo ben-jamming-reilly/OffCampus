@@ -17,7 +17,6 @@ export const loadUser = () => async (dispatch) => {
   try {
     let res = await axios.get("/api/auth/");
 
-    console.log(res.data);
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -39,7 +38,7 @@ export const signup = (userData) => async (dispatch) => {
     },
   };
   const body = JSON.stringify(userData);
-  console.log(userData);
+
   try {
     const res = await axios.post("/api/auth/register", body, config);
 
