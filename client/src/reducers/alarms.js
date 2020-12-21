@@ -7,6 +7,7 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case SET_ALARM:
+      console.log(payload);
       return [...state, payload];
     case REMOVE_ALARM:
       return state.filter((alarm) => alarm.id !== payload);

@@ -4,12 +4,13 @@ import { SET_ALARM, REMOVE_ALARM } from "./types";
 export const setAlarm = (msg, type = "danger") => (dispatch) => {
   const id = uuidv4();
 
+  console.log(msg);
   dispatch({
     type: SET_ALARM,
     payload: { msg, type, id },
   });
 
-  setTimeout(() => dispatch({ type: REMOVE_ALARM, payload: id }), 10000);
+  setTimeout(() => dispatch({ type: REMOVE_ALARM, payload: id }), 7000);
 };
 
 export const removeAlarm = (id) => (dispatch) => {

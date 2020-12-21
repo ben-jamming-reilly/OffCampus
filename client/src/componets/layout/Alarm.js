@@ -1,26 +1,32 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Alert from "react-bootstrap/Alert";
 
 import { removeAlarm } from "../../actions/alarm";
 
+import Alert from "react-bootstrap/Alert";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+
 const Alarm = ({ alarms, removeAlarm }) => {
-  console.log(alarms);
   return (
     <Fragment>
-      {alarms == null || alarms.length === 0
-        ? ""
-        : alarms.map((alarm) => (
-            <Alert
-              variant={alarm.type}
-              key={alarm.id}
-              onClose={() => removeAlarm(alarm.id)}
-              show={true}
-            >
-              <p>{alarm.msg}</p>
-            </Alert>
-          ))}
+      <Container className='px-5'>
+        {alarms === undefined || alarms.length < 1
+          ? ""
+          : alarms.map((alarm) => (
+              <Alert
+                variant={alarm.type}
+                key={alarm.id}
+                onClose={() => removeAlarm(alarm.id)}
+                show={true}
+                dismissible
+              >
+                <p>{alarm.msg}</p>
+              </Alert>
+            ))}
+      </Container>
     </Fragment>
   );
 };
@@ -31,7 +37,7 @@ Alarm.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  alarms: state.alarm,
+  alarms: state.alarms,
 });
 
 export default connect(mapStateToProps, { removeAlarm })(Alarm);
