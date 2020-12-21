@@ -1,23 +1,40 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
+const db = require("../../utils/db");
+
+// Leave a review for a house
+router.post("/:zip/:city/:street", auth, async (req, res) => {
+  const address = req.params.address;
+  const { review } = req.body;
+
+  try {
+    const [rows, fields] = await db.query(
+      "" +
+        "INSERT INTO Review (user_id, address, review) " +
+        "VALUES (?, ?, ?); ",
+      [req.user.id, address, review]
+    );
+
+    return res.status(201).json({ success: true });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send("Server Error");
+  }
+});
 
 // Leave a like for a review
 router.post("/like", auth, async (req, res) => {
-  console.log(req.body);
-  const { review, address } = req.body;
-  try {
-    let conn = await getConn();
+  const { user_id, street, city, zip } = req.body;
 
-    await conn.query(
-      "" +
-        "INSERT INTO Upvote (user_id, address, liker_user_id) " +
-        "VALUES (?, ?, ?); ",
-      [review.user_id, address, req.user.id]
+  try {
+    await db.query(
+      "INSERT INTO Upvote (user_id, street, city, zip, upvoter_user_id) " +
+        "VALUES (?, ?, ?, ?, ?); ",
+      [user_id, street, city, zip, req.user.id]
     );
 
-    conn.close();
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ msg: "You just liked a message!" });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
@@ -26,20 +43,16 @@ router.post("/like", auth, async (req, res) => {
 
 // Remove a like for a review
 router.post("/unlike", auth, async (req, res) => {
-  console.log(req.body);
-  const { review, address } = req.body;
+  const { user_id, street, city, zip } = req.body;
 
   try {
-    let conn = await getConn();
-
-    await conn.query(
-      "" +
-        "DELETE FROM Upvote WHERE user_id = ? AND address = ? AND liker_user_id = ?; " +
-        "VALUES (?, ?, ?); ",
-      [review.user_id, address, req.user.id]
+    await db.query(
+      "DELETE FROM Upvote " +
+        "WHERE user_id = ? AND street = ? AND city = ? AND zip = ? AND upvoter_user_id = ? " +
+        "VALUES (?, ?, ?, ?, ?); ",
+      [user_id, street, city, zip, req.user.id]
     );
 
-    conn.close();
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err.message);
@@ -51,13 +64,13 @@ router.post("/unlike", auth, async (req, res) => {
 router.get("/:address", async (req, res) => {
   const address = req.params.address;
   try {
-    let conn = await getConn();
-
-    const [rows, fields] = await conn.query(
-      "" +
-        "SELECT U.user_name, U.user_id, R.review, COUNT(Up.liker_user_id) as likes  " +
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT U.user_name, U.user_id, R.review, COUNT(Up.liker_user_id) as likes  " +
         "FROM User U JOIN Review R USING(user_id) " +
-        " LEFT JOIN Upvote Up Using(address) " +
+        "LEFT JOIN Upvote Up Using(address) " +
         "WHERE R.address = ? " +
         "GROUP BY R.user_id " +
         "ORDER BY likes; ",
@@ -74,30 +87,7 @@ router.get("/:address", async (req, res) => {
       });
     });
 
-    conn.close();
     return res.status(200).json(reviews);
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).send("Server Error");
-  }
-});
-
-// Leave a review for a house
-router.post("/:address", auth, async (req, res) => {
-  const address = req.params.address;
-  const { review } = req.body;
-  try {
-    let conn = await getConn();
-
-    const [rows, fields] = await conn.query(
-      "" +
-        "INSERT INTO Review (user_id, address, review) " +
-        "VALUES (?, ?, ?); ",
-      [req.user.id, address, review]
-    );
-
-    conn.close();
-    return res.status(201).json({ success: true });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");

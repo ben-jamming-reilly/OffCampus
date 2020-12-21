@@ -1,17 +1,33 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
 
 const db = require("../../utils/db");
 const auth = require("../../middleware/auth");
 const uploads = require("../../middleware/uploads");
 
+// Add a property
 router.post("/", [auth, uploads.single("image")], async (req, res) => {
   let form = JSON.parse(req.body.data);
   try {
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT * FROM Property WHERE street = ? AND city = ? AND zip = ?",
+      [form.street, form.city, form.zip]
+    );
+
+    if (rows.length > 0) {
+      return res
+        .status(405)
+        .json({ errors: [{ msg: "Property already exists." }] });
+    }
+
     await db.query(
       "INSERT INTO Property " +
         "(street, city, zip, state, rent, capacity, lease_date, file_name) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?); ",
       [
         form.street,
         form.city,
@@ -24,12 +40,37 @@ router.post("/", [auth, uploads.single("image")], async (req, res) => {
       ]
     );
 
-    await db.query(
-      "INSERT INTO Review (user_id, address, review) VALUES (?, ?, ?) ",
-      [req.user.id, form.address, form.review]
+    return res.status(201).json({ msg: "Property Added!" });
+  } catch (err) {
+    console.error(err.message);
+
+    // Remove property image from uploads/ dir
+    fs.unlink(req.file.filename, (err) => {
+      console.error(err);
+    });
+
+    return res.status(500).send("Server Error");
+  }
+});
+
+router.get("/:zip/:city/:street", async (req, res) => {
+  const { street, city, zip } = req.params;
+  try {
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT street, city, zip, state, rent, capacity, file_name " +
+        "FROM Property WHERE street = ? AND city = ? AND zip = ?; ",
+      [street, city, zip]
     );
 
-    return res.status(201).json({ success: true });
+    if (rows.length != 1)
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Property doesn't exist" }] });
+
+    return res.status(200).json(rows[0]);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
@@ -50,24 +91,12 @@ router.get("/", async (req, res) => {
 router.get("/rent", async (req, res) => {
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM Property ORDER BY rent; ",
+      "SELECT street, city, zip, state, rent, capacity, file_name " +
+        " FROM Property ORDER BY rent; ",
       []
     );
 
-    let properties = [];
-
-    rows.forEach((element) => {
-      properties.push({
-        address: element.address,
-        rent: element.rent,
-        lease_date: element.lease_date,
-        capacity: element.capacity,
-        landlord_id: element.landlord_id,
-        file_name: element.file_name,
-      });
-    });
-
-    return res.status(200).json(properties);
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
@@ -77,27 +106,14 @@ router.get("/rent", async (req, res) => {
 router.get("/reviews", async (req, res) => {
   try {
     const [rows, fields] = await db.query(
-      "SELECT P.address, P.rent, P.lease_date, P.capacity, P.landlord_id, P.file_name " +
-        "FROM Property P JOIN Review R USING(address) " +
-        "GROUP BY P.address " +
-        "ORDER BY COUNT(*); ",
+      "SELECT P.street, P.city, P.zip, P.state, P.rent, P.capacity, P.file_name " +
+        "FROM Property P JOIN Review R USING(street, city, zip) " +
+        "GROUP BY (P.street, P.city, P.zip) " +
+        "ORDER BY COUNT(*) ASC; ",
       []
     );
 
-    let properties = [];
-
-    rows.forEach((element) => {
-      properties.push({
-        address: element.address,
-        rent: element.rent,
-        lease_date: element.lease_date,
-        capacity: element.capacity,
-        landlord_id: element.landlord_id,
-        file_name: element.file_name,
-      });
-    });
-
-    return res.status(200).json(properties);
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
@@ -107,53 +123,11 @@ router.get("/reviews", async (req, res) => {
 router.get("/capacity", async (req, res) => {
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM Property ORDER BY capacity; ",
+      "SELECT street, city, zip, state, rent, capacity, file_name FROM Property ORDER BY capacity; ",
       []
     );
 
-    let properties = [];
-
-    rows.forEach((element) => {
-      properties.push({
-        address: element.address,
-        rent: element.rent,
-        lease_date: element.lease_date,
-        capacity: element.capacity,
-        landlord_id: element.landlord_id,
-        file_name: element.file_name,
-      });
-    });
-
-    return res.status(200).json(properties);
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).send("Server Error");
-  }
-});
-
-router.get("/:address", async (req, res) => {
-  const address = req.params.address;
-  try {
-    const [rows, fields] = await db.query(
-      "" + "SELECT * FROM Property WHERE address = ?",
-      [address]
-    );
-
-    if (rows.length != 1)
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Property doesn't exist" }] });
-
-    let property = {
-      address: rows[0].address,
-      rent: rows[0].rent,
-      lease_date: rows[0].lease_date,
-      capacity: rows[0].capacity,
-      landlord_id: rows[0].landlord_id,
-      file_name: rows[0].file_name,
-    };
-
-    return res.status(200).json(property);
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");

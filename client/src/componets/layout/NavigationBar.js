@@ -44,6 +44,11 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
               <i class='fas fa-edit fa-2x'></i>
             </Link>
           </Nav.Item>
+          <Nav.Item style={{ padding: "10px" }}>
+            <Link to='/property/add/'>
+              <i class='fas fa-home fa-2x'></i>
+            </Link>
+          </Nav.Item>
           {!isAuthenticated ? (
             <Nav.Item
               style={{

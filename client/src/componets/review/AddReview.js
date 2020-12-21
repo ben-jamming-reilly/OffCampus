@@ -54,7 +54,6 @@ const AddReview = ({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("HERERE");
     if (address) {
       addReview(formData, address, history);
     } else {

@@ -48,6 +48,7 @@ const Register = ({ signup, setAlarm }) => {
   return (
     <Fragment>
       <Form
+        className='float-center rounded border border-secondary bg-light'
         onSubmit={(e) => onSubmit(e)}
         style={{
           padding: "10px",

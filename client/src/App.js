@@ -17,6 +17,7 @@ import Search from "./componets/search/Search";
 import HousePage from "./componets/house/HousePage";
 import AddReview from "./componets/review/AddReview";
 import Landing from "./componets/landing/Landing";
+import AddProperty from "./componets/house/AddProperty";
 
 import "./App.css";
 
@@ -38,12 +39,17 @@ const App = () => {
           <Route exact path='/' />
           <section className='container'>
             <Switch>
+              <Route exact path='/' component={Landing} />
               <Route exact path='/auth' component={Auth} />
               <Route exact path='/search' component={Search} />
-              <Route exact path='/property/:address' component={HousePage} />
+              <Route
+                exact
+                path='/property/:zip/:city/:street'
+                component={HousePage}
+              />
+              <Route exact path='/property/add' component={AddProperty} />
               <Route exact path='/addreview' component={AddReview} />
               <Route exact path='/addreview/:address' component={AddReview} />
-              <Route exact path='/' component={Landing} />
             </Switch>
           </section>
         </Fragment>
