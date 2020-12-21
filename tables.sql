@@ -10,8 +10,8 @@ CREATE TABLE User (
     user_id VARCHAR(36),
     first_name VARCHAR(20),
     last_name VARCHAR(20),
-    user_name VARCHAR(20) NOT NULL,
-    email VARCHAR(80) NOT NULL,
+    user_name VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(80) NOT NULL UNIQUE,
     password VARCHAR(60) NOT NULL,
 
     PRIMARY KEY (user_id)
