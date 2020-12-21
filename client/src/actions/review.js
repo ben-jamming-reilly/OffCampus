@@ -8,10 +8,10 @@ import {
 
 import { setAlarm } from "./alarm";
 
-export const getReviews = (address) => async (dispatch) => {
+export const getReviews = (zip, city, street) => async (dispatch) => {
   dispatch({ type: LOADING_REVIEWS });
   try {
-    let res = await axios.get(`/api/reviews/${address}`);
+    let res = await axios.get(`/api/reviews/${zip}/${city}/${street}`);
 
     dispatch({
       type: GET_REVIEWS,

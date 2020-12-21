@@ -5,18 +5,20 @@ const db = require("../../utils/db");
 
 // Leave a review for a house
 router.post("/:zip/:city/:street", auth, async (req, res) => {
-  const address = req.params.address;
-  const { review } = req.body;
+  const { zip, city, street } = req.params;
+  const { review, rating } = req.body;
 
   try {
-    const [rows, fields] = await db.query(
-      "" +
-        "INSERT INTO Review (user_id, address, review) " +
-        "VALUES (?, ?, ?); ",
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "INSERT INTO Review (user_id, street, city, zip, review, rating) " +
+        "VALUES (?, ?, ?, ?, ?, ?); ",
       [req.user.id, address, review]
     );
 
-    return res.status(201).json({ success: true });
+    return res.status(201).json({ msg: "Property Added!" });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
@@ -61,33 +63,23 @@ router.post("/unlike", auth, async (req, res) => {
 });
 
 // Get all reviews for a house
-router.get("/:address", async (req, res) => {
-  const address = req.params.address;
+router.get("/:zip/:city/:street", async (req, res) => {
+  const { zip, city, street } = req.params;
   try {
     const [
       rows,
       fields,
     ] = await db.query(
-      "SELECT U.user_name, U.user_id, R.review, COUNT(Up.liker_user_id) as likes  " +
+      "SELECT U.user_name, U.user_id, R.review, R.rating, COUNT(Up.upvoter_user_id) as likes  " +
         "FROM User U JOIN Review R USING(user_id) " +
-        "LEFT JOIN Upvote Up Using(address) " +
-        "WHERE R.address = ? " +
+        "LEFT JOIN Upvote Up Using(zip, city, street) " +
+        "WHERE zip = ? AND city = ? AND street  = ? " +
         "GROUP BY R.user_id " +
         "ORDER BY likes; ",
-      [address]
+      [zip, city, street]
     );
 
-    let reviews = [];
-    rows.forEach((element) => {
-      reviews.push({
-        text: element.review,
-        user_name: element.user_name,
-        user_id: element.user_id,
-        num_likes: element.likes,
-      });
-    });
-
-    return res.status(200).json(reviews);
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");

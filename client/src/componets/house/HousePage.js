@@ -29,7 +29,12 @@ const HousePage = ({
   const { zip, city, street } = useParams();
   useEffect(() => getHouse(zip, city, street), [getHouse, zip, city, street]);
 
-  //useEffect(() => getReviews(zip, city, street), [getReviews, address]);
+  useEffect(() => getReviews(zip, city, street), [
+    getReviews,
+    zip,
+    city,
+    street,
+  ]);
 
   return (
     <Fragment>
