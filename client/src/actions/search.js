@@ -41,8 +41,8 @@ export const getHouse = (zip, city, street) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
+    if (err.response) {
+      const errors = err.response.data.errors;
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }

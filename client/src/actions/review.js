@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   GET_REVIEWS,
   LIKE_REVIEW,
+  ADD_REVIEW,
   UNLIKE_REVIEW,
   LOADING_REVIEWS,
 } from "./types";
@@ -106,7 +107,7 @@ export const addNewReview = (formData, file, history) => async (dispatch) => {
   }
 };
 
-export const addReview = (formData, address, history) => async (dispatch) => {
+export const addReview = (formData, user, property) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -115,13 +116,32 @@ export const addReview = (formData, address, history) => async (dispatch) => {
 
   const body = JSON.stringify(formData);
   try {
-    await axios.post(`/api/reviews/${address}`, body, config);
+    let res = await axios.post(
+      `/api/reviews/${property.zip}/${property.city}/${property.street}`,
+      body,
+      config
+    );
 
-    // On success
-    history.push(`/property/${formData.address}`);
+    const review = {
+      user_name: user.user_name,
+      user_id: user.id,
+      review: formData.review,
+      rating: formData.rating,
+      likes: 0,
+    };
+
+    console.log(review);
+
+    dispatch({
+      type: ADD_REVIEW,
+      payload: review,
+    });
+
+    console.log(res.data);
+    dispatch(setAlarm("Review Added", "success"));
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
+    if (err.response) {
+      const errors = err.response.data.errors;
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }

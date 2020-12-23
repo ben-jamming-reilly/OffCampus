@@ -6,20 +6,22 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Review = ({ data, address, likeFunc, unlikeFunc }) => {
+const Review = ({ data, likeFunc, unlikeFunc }) => {
   const onClick = (e) => {
+    /*
     if (data.isLiked) {
       unlikeFunc(data, address);
     } else {
       likeFunc(data, address);
     }
+    */
   };
 
   return (
     <Fragment>
       <br />
       <Card>
-        <Card.Body>{data.text}</Card.Body>
+        <Card.Body>{data.review}</Card.Body>
         <Card.Footer className='py-1'>
           <Row>
             <Col className='text-left align-self-center'>{data.user_name}</Col>

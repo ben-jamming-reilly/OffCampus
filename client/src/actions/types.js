@@ -19,3 +19,5 @@ export const GET_REVIEWS = "GET_REVIEWS";
 export const LIKE_REVIEW = "LIKE_REVIEW";
 export const UNLIKE_REVIEW = "UNLIKE_REVIEW";
 export const LOADING_REVIEWS = "LOADING_REVIEWS";
+export const ADD_REVIEW = "ADD_REVIEW";
+export const UPDATE_REVIEW = "UPDATE_REVIEW";
