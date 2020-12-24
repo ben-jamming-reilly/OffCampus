@@ -8,7 +8,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  review: {},
+  review: null,
   reviews: [],
   loading: true,
 };
@@ -36,7 +36,7 @@ export default function (state = initialState, action) {
         review: payload,
         reviews: [
           payload,
-          ...state.reviews.reviews.filter((r) => r.user_id !== payload.user_id),
+          ...state.reviews.filter((r) => r.user_id !== payload.user_id),
         ],
         loading: false,
       };
@@ -44,7 +44,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         reviews: [
-          state.reviews.reviews.map((r) =>
+          state.reviews.map((r) =>
             payload.user_id == r.user_id
               ? { ...r, num_likes: r.num_likes++ }
               : r

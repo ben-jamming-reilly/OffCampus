@@ -74,11 +74,15 @@ const HousePage = ({
               <Card>
                 <Accordion.Collapse eventKey='0'>
                   <Card.Body>
-                    <AddReviewForm
-                      property={houses.house}
-                      addReviewFunc={addReview}
-                      user={user}
-                    />
+                    {!reviews.review ? (
+                      <AddReviewForm
+                        property={houses.house}
+                        addReviewFunc={addReview}
+                        user={user}
+                      />
+                    ) : (
+                      "Edit"
+                    )}
                   </Card.Body>
                 </Accordion.Collapse>
                 <Card.Footer className='py-0 px-0 text-center bg-primary'>
@@ -88,7 +92,7 @@ const HousePage = ({
                     className='px-0'
                     style={{ width: "100%" }}
                   >
-                    Leave A Review
+                    {!reviews.review ? "Leave A Review" : "Edit Review"}
                   </Accordion.Toggle>
                 </Card.Footer>
               </Card>

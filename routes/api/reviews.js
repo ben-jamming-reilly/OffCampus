@@ -29,12 +29,11 @@ router.post("/:zip/:city/:street", auth, async (req, res) => {
       return res.status(200).json({ msg: "Review Updated!" });
     }
 
-    /*
     await db.query(
       "INSERT INTO Review (user_id, zip, city, street, review, rating) " +
         "VALUES (?, ?, ?, ?, ?, ?); ",
       [id, zip, city, street, review, rating]
-    );*/
+    );
 
     return res.status(201).json({ msg: "Property Added!" });
   } catch (err) {

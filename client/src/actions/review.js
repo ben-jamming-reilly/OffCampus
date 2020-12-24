@@ -130,15 +130,12 @@ export const addReview = (formData, user, property) => async (dispatch) => {
       likes: 0,
     };
 
-    console.log(review);
-
     dispatch({
       type: ADD_REVIEW,
       payload: review,
     });
 
-    console.log(res.data);
-    dispatch(setAlarm("Review Added", "success"));
+    dispatch(setAlarm(res.data.msg, "success"));
   } catch (err) {
     if (err.response) {
       const errors = err.response.data.errors;
