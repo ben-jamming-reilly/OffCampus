@@ -6,37 +6,47 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Review = ({ data, likeFunc, unlikeFunc }) => {
+import ReactStars from "react-stars";
+
+const Review = ({ data, property, likeFunc, unlikeFunc }) => {
   const onClick = (e) => {
-    /*
     if (data.isLiked) {
-      unlikeFunc(data, address);
+      unlikeFunc(data, property);
     } else {
-      likeFunc(data, address);
+      likeFunc(data, property);
     }
-    */
   };
 
   return (
     <Fragment>
-      <br />
-      <Card>
-        <Card.Body>{data.review}</Card.Body>
-        <Card.Footer className='py-1'>
-          <Row>
-            <Col className='text-left align-self-center'>{data.user_name}</Col>
-            <Col className='text-right'>
-              <Button
-                variant={data.isLiked ? "primary" : "outline-primary"}
-                onClick={(e) => onClick(e)}
-              >
-                <i class='far fa-thumbs-up'></i>{" "}
-                {data.numLikes ? Number(data.num_likes) : 0}
-              </Button>
-            </Col>
-          </Row>
-        </Card.Footer>
-      </Card>
+      {data && data != undefined && (
+        <Card>
+          <Card.Body>{data.review}</Card.Body>
+          <Card.Footer className='py-1'>
+            <Row>
+              <Col className='text-left align-self-center'>
+                {data.user_name}
+              </Col>
+              <Col className='text-left align-self-center'>
+                <ReactStars
+                  value={data.rating}
+                  size={"30"}
+                  half={false}
+                  edit={false}
+                />
+              </Col>
+              <Col className='text-right'>
+                <Button
+                  variant={data.isLiked ? "primary" : "outline-primary"}
+                  onClick={(e) => onClick(e)}
+                >
+                  <i class='far fa-thumbs-up'></i> {data.likes}
+                </Button>
+              </Col>
+            </Row>
+          </Card.Footer>
+        </Card>
+      )}
     </Fragment>
   );
 };

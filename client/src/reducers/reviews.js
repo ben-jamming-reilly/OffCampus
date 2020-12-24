@@ -1,5 +1,6 @@
 import {
   GET_REVIEWS,
+  GET_REVIEW,
   LIKE_REVIEW,
   UNLIKE_REVIEW,
   ADD_REVIEW,
@@ -23,38 +24,33 @@ export default function (state = initialState, action) {
         reviews: payload,
         loading: false,
       };
+    case GET_REVIEW:
+      return {
+        ...state,
+        review: payload,
+      };
     case ADD_REVIEW:
       return {
         ...state,
         review: payload,
-        reviews: [payload, ...state.reviews],
-        loading: false,
+        reviews: state.reviews.map((r) =>
+          r.user_id === payload.user_id ? payload : r
+        ),
       };
     case UPDATE_REVIEW:
       return {
-        ...state,
+        reviews: [payload],
         review: payload,
-        reviews: [
-          payload,
-          ...state.reviews.filter((r) => r.user_id !== payload.user_id),
-        ],
         loading: false,
       };
     case LIKE_REVIEW:
-      return {
-        ...state,
-        reviews: [
-          state.reviews.map((r) =>
-            payload.user_id == r.user_id
-              ? { ...r, num_likes: r.num_likes++ }
-              : r
-          ),
-        ],
-        loading: false,
-      };
     case UNLIKE_REVIEW:
       return {
         ...state,
+        reviews: state.reviews.map((r) =>
+          payload.user_id === r.user_id ? payload : r
+        ),
+
         loading: false,
       };
     case LOADING_REVIEWS:

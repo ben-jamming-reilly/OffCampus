@@ -5,19 +5,47 @@ import {
   ADD_REVIEW,
   UNLIKE_REVIEW,
   LOADING_REVIEWS,
+  GET_REVIEW,
 } from "./types";
 
 import { setAlarm } from "./alarm";
 
-export const getReviews = (zip, city, street) => async (dispatch) => {
+export const getReviews = (zip, city, street, user = null) => async (
+  dispatch
+) => {
   dispatch({ type: LOADING_REVIEWS });
   try {
-    let res = await axios.get(`/api/reviews/${zip}/${city}/${street}`);
+    if (!user) {
+      let res = await axios.get(`/api/reviews/${zip}/${city}/${street}`);
 
-    dispatch({
-      type: GET_REVIEWS,
-      payload: res.data,
-    });
+      dispatch({
+        type: GET_REVIEWS,
+        payload: res.data,
+      });
+
+      if (user) {
+        dispatch({
+          type: GET_REVIEW,
+          payload: res.data.filter((r) => r.user_id === user.id)[0],
+        });
+      }
+    } else {
+      let res = await axios.get(
+        `/api/reviews/${zip}/${city}/${street}/${user.id}`
+      );
+
+      dispatch({
+        type: GET_REVIEWS,
+        payload: res.data,
+      });
+
+      if (user) {
+        dispatch({
+          type: GET_REVIEW,
+          payload: res.data.filter((r) => r.user_id === user.id)[0],
+        });
+      }
+    }
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
@@ -27,23 +55,23 @@ export const getReviews = (zip, city, street) => async (dispatch) => {
   }
 };
 
-export const likeReview = (review, address) => async (dispatch) => {
+export const likeReview = (review, property) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
-  const body = JSON.stringify({ review: review, address: address });
+  const body = JSON.stringify({ review: review, property: property });
 
   try {
-    await axios.post(`/api/reviews/like`, body, config);
-
-    // assume success
-    review.numLikes++;
+    const res = await axios.post(`/api/reviews/like`, body, config);
+    let updateReview = review;
+    updateReview.likes++;
+    updateReview.isLiked = true;
 
     dispatch({
       type: LIKE_REVIEW,
-      payload: review,
+      payload: updateReview,
     });
   } catch (err) {
     if (err.response) {
@@ -56,21 +84,23 @@ export const likeReview = (review, address) => async (dispatch) => {
   }
 };
 
-export const unlikeReview = (review, address) => async (dispatch) => {
+export const unlikeReview = (review, property) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ review: review, address: address });
+  const body = JSON.stringify({ review: review, property: property });
   try {
-    await axios.post(`/api/reviews/unlike`, body, config);
-    review.numLikes--;
+    const res = await axios.post(`/api/reviews/unlike`, body, config);
+    let updateReview = review;
+    updateReview.likes--;
+    updateReview.isLiked = false;
 
     dispatch({
       type: UNLIKE_REVIEW,
-      payload: review,
+      payload: updateReview,
     });
   } catch (err) {
     if (err.response) {
@@ -83,6 +113,7 @@ export const unlikeReview = (review, address) => async (dispatch) => {
   }
 };
 
+// OLD, get rid of this
 export const addNewReview = (formData, file, history) => async (dispatch) => {
   const config = {
     headers: {

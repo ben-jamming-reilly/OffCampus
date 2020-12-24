@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 
 import ReactStars from "react-stars";
 
-const EditReviewForm = ({ property, review, editReviewFunc }) => {
+const EditReviewForm = ({ property, review, editReviewFunc, user }) => {
   const [formData, setFormData] = useState({
     review: review.review,
     rating: review.rating,
@@ -20,7 +20,7 @@ const EditReviewForm = ({ property, review, editReviewFunc }) => {
 
     if (formData.rating > 0) {
       console.log(formData);
-      //editReviewFunc(formData, property);
+      editReviewFunc(formData, user, property);
     } else {
       console.log("Please add a rating as well.");
     }

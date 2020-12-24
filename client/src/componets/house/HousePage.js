@@ -39,12 +39,11 @@ const HousePage = ({
   // This get address from
   const { zip, city, street } = useParams();
 
-  console.log(reviews);
-
   useEffect(() => getHouse(zip, city, street), [getHouse, zip, city, street]);
 
-  useEffect(() => getReviews(zip, city, street), [
+  useEffect(() => getReviews(zip, city, street, user), [
     getReviews,
+    user,
     zip,
     city,
     street,
@@ -54,7 +53,7 @@ const HousePage = ({
     <Fragment>
       <br />
       <Col />
-      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
+      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto px-0'>
         <Row className='float-center'>
           {houses.loading || !houses.house ? (
             <Col className='text-center'>
@@ -81,7 +80,12 @@ const HousePage = ({
                         user={user}
                       />
                     ) : (
-                      "Edit"
+                      <EditReviewForm
+                        property={houses.house}
+                        editReviewFunc={addReview}
+                        review={reviews.review}
+                        user={user}
+                      />
                     )}
                   </Card.Body>
                 </Accordion.Collapse>
@@ -100,23 +104,28 @@ const HousePage = ({
           )}
         </Row>
         <Row className='float-center'>
-          {reviews.loading ? (
+          {reviews.loading || !reviews.reviews ? (
             <Col className='text-center'>
               <br />
               <Spinner animation='border' />
             </Col>
           ) : (
-            reviews.reviews.map((r) => (
-              <Col xs='12'>
-                {
-                  <Review
-                    data={r}
-                    likeFunc={likeReview}
-                    unlikeFunc={unlikeReview}
-                  />
-                }
-              </Col>
-            ))
+            reviews.reviews.map((r) =>
+              !r ? (
+                ""
+              ) : (
+                <Col xs='12' className='pt-1'>
+                  {
+                    <Review
+                      data={r}
+                      property={houses.house}
+                      likeFunc={likeReview}
+                      unlikeFunc={unlikeReview}
+                    />
+                  }
+                </Col>
+              )
+            )
           )}
         </Row>
       </Col>

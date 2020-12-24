@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
+import Container from "react-bootstrap/Container";
 
 // Layout
 import { loadUser } from "./actions/auth";
@@ -15,7 +16,6 @@ import Alarm from "./componets/layout/Alarm";
 import Auth from "./componets/auth/Auth";
 import Search from "./componets/search/Search";
 import HousePage from "./componets/house/HousePage";
-import AddReview from "./componets/review/AddReview";
 import Landing from "./componets/landing/Landing";
 import AddProperty from "./componets/house/AddProperty";
 
@@ -37,20 +37,20 @@ const App = () => {
           <NavigationBar />
           <Alarm />
           <Route exact path='/' />
-          <section className='container'>
-            <Switch>
-              <Route exact path='/' component={Landing} />
-              <Route exact path='/auth' component={Auth} />
-              <Route exact path='/search' component={Search} />
-              <Route
-                exact
-                path='/property/:zip/:city/:street'
-                component={HousePage}
-              />
-              <Route exact path='/property/add' component={AddProperty} />
-              <Route exact path='/addreview' component={AddReview} />
-              <Route exact path='/addreview/:address' component={AddReview} />
-            </Switch>
+          <section>
+            <Container fluid='sm'>
+              <Switch>
+                <Route exact path='/' component={Landing} />
+                <Route exact path='/auth' component={Auth} />
+                <Route exact path='/search' component={Search} />
+                <Route
+                  exact
+                  path='/property/:zip/:city/:street'
+                  component={HousePage}
+                />
+                <Route exact path='/property/add' component={AddProperty} />
+              </Switch>
+            </Container>
           </section>
         </Fragment>
       </Router>
