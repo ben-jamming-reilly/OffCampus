@@ -22,6 +22,7 @@ CREATE TABLE Property (
     city VARCHAR(50),
     zip  INT,
 
+    next_lease_date DATE,
     state VARCHAR(50) NOT NULL,
     type VARCHAR(10),
     bed TINYINT UNSIGNED,
@@ -79,6 +80,11 @@ CREATE TABLE PIDFloorFeature (
     area INT,
 
     PRIMARY KEY (pid, floor_type)
+);
+
+CREATE TABLE PIDOwner (
+    
+    pid DECIMAL(9, 4),
 );
 
 

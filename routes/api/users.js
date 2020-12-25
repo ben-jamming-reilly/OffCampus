@@ -3,15 +3,18 @@ const router = express.Router();
 const config = require("config");
 const auth = require("../../middleware/auth");
 const db = require("../../utils/db");
+const axios = require("axios");
 
 // This is just a test route, remove for production
 router.get("/", async (req, res) => {
   try {
-    const [rows, fields] = await db.query("SELECT * FROM User", []);
+    let stuff = await axios.get(
+      "https://gismo.spokanecounty.org/arcgis/rest/services/SCOUT/PropertyLookup/MapServer/0/"
+    );
 
-    console.log(rows);
+    console.log(stuff);
 
-    return res.status(200).json(rows);
+    return res.status(200).json({ msg: "Okay!" });
   } catch (err) {
     console.error(err.message);
     return res.status(500).send("Server Error");
