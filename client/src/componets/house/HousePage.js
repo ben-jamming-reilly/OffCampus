@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import React, { Fragment, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -12,6 +12,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 import { getHouse } from "../../actions/search";
+import { setAlarm } from "../../actions/alarm";
 import {
   getReviews,
   addReview,
@@ -31,11 +32,11 @@ const HousePage = ({
   addReview,
   likeReview,
   unlikeReview,
+  setAlarm,
   houses,
   reviews,
   user,
 }) => {
-  const history = useHistory();
   // This get address from
   const { zip, city, street } = useParams();
 
@@ -78,6 +79,7 @@ const HousePage = ({
                         property={houses.house}
                         addReviewFunc={addReview}
                         user={user}
+                        alarmFunc={setAlarm}
                       />
                     ) : (
                       <EditReviewForm
@@ -119,8 +121,10 @@ const HousePage = ({
                     <Review
                       data={r}
                       property={houses.house}
+                      user={user}
                       likeFunc={likeReview}
                       unlikeFunc={unlikeReview}
+                      alarmFunc={setAlarm}
                     />
                   }
                 </Col>
@@ -140,6 +144,7 @@ HousePage.propTypes = {
   addReview: PropTypes.func.isRequired,
   likeReview: PropTypes.func.isRequired,
   unlikeReview: PropTypes.func.isRequired,
+  setAlarm: PropTypes.func.isRequired,
   houses: PropTypes.object.isRequired,
   reviews: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
@@ -157,4 +162,5 @@ export default connect(mapStateToProps, {
   addReview,
   likeReview,
   unlikeReview,
+  setAlarm,
 })(HousePage);

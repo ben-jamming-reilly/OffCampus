@@ -8,12 +8,16 @@ import Col from "react-bootstrap/Col";
 
 import ReactStars from "react-stars";
 
-const Review = ({ data, property, likeFunc, unlikeFunc }) => {
+const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
   const onClick = (e) => {
-    if (data.isLiked) {
-      unlikeFunc(data, property);
+    if (user) {
+      if (data.isLiked) {
+        unlikeFunc(data, property);
+      } else {
+        likeFunc(data, property);
+      }
     } else {
-      likeFunc(data, property);
+      alarmFunc("You must login to like a review", "danger");
     }
   };
 

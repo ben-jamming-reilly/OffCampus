@@ -19,14 +19,15 @@ CREATE TABLE User (
 
 CREATE TABLE Property (
     street VARCHAR(50),
-    city VARCHAR(50) ,
+    city VARCHAR(50),
     zip  INT,
-    state VARCHAR(50) NOT NULL,
 
+    state VARCHAR(50) NOT NULL,
+    type VARCHAR(10),
     bed TINYINT UNSIGNED,
     bath TINYINT UNSIGNED,
+    area INT UNSIGNED,
     rent DECIMAL(8,2) UNSIGNED,
-    capacity INT,
     file_name VARCHAR(100),
 
     PRIMARY KEY (street, city, zip)
@@ -35,7 +36,7 @@ CREATE TABLE Property (
 CREATE TABLE Review (
     user_id VARCHAR(36),
     street VARCHAR(50),
-    city VARCHAR(50) ,
+    city VARCHAR(50),
     zip  INT,
 
     review VARCHAR(500),
@@ -56,6 +57,28 @@ CREATE TABLE Upvote (
     PRIMARY KEY (user_id,  street, city, zip, upvoter_user_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id),
     FOREIGN KEY (user_id, street, city, zip) REFERENCES Review (user_id, street, city, zip)
+);
+
+/* City of Spokane Tax Info */
+
+CREATE TABLE AddressPID (
+    street VARCHAR(50),
+    city VARCHAR(50),
+    zip  INT,
+    pid DECIMAL(9, 4) UNIQUE,
+
+    PRIMARY KEY (street, city, zip)
+);
+
+CREATE TABLE PIDFloorFeature (
+    pid DECIMAL(9, 4),
+    floor_type VARCHAR(10),
+    beds TINYINT,
+    baths TINYINT,
+    fin_area INT,
+    area INT,
+
+    PRIMARY KEY (pid, floor_type)
 );
 
 

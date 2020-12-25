@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 
 import ReactStars from "react-stars";
 
-const AddReviewForm = ({ property, addReviewFunc, user }) => {
+const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
   const [formData, setFormData] = useState({
     review: "",
     rating: 0,
@@ -19,8 +19,9 @@ const AddReviewForm = ({ property, addReviewFunc, user }) => {
     e.preventDefault();
 
     if (formData.rating > 0 && user) {
-      console.log(formData);
       addReviewFunc(formData, user, property);
+    } else if (!user) {
+      alarmFunc("You must login to post a review", "danger");
     } else {
       console.log("Error");
     }
