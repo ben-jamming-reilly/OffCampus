@@ -4,6 +4,7 @@ DROP TABLE if EXISTS Upvote;
 DROP TABLE if EXISTS Review;
 DROP TABLE if EXISTS Property;
 DROP TABLE if EXISTS User;
+DROP TABLE if EXISTS SpokaneParcel;
 
 
 CREATE TABLE User (
@@ -20,16 +21,21 @@ CREATE TABLE User (
 CREATE TABLE Property (
     street VARCHAR(50),
     city VARCHAR(50),
-    zip  INT,
+    zip INT,
 
-    next_lease_date DATE,
-    state VARCHAR(50) NOT NULL,
+    state VARCHAR(2) NOT NULL,
+
     type VARCHAR(10),
+    next_lease_date DATE,
     bed TINYINT UNSIGNED,
     bath TINYINT UNSIGNED,
     area INT UNSIGNED,
+
     rent DECIMAL(8,2) UNSIGNED,
+
     file_name VARCHAR(100),
+    pic_link VARCHAR(100),
+    verified BOOLEAN,
 
     PRIMARY KEY (street, city, zip)
 );
@@ -51,7 +57,7 @@ CREATE TABLE Review (
 CREATE TABLE Upvote (
     user_id VARCHAR(36),
     street VARCHAR(50),
-    city VARCHAR(50) ,
+    city VARCHAR(50),
     zip  INT,
     upvoter_user_id VARCHAR(36),
 
@@ -62,46 +68,45 @@ CREATE TABLE Upvote (
 
 /* City of Spokane Tax Info */
 
-CREATE TABLE AddressPID (
+CREATE TABLE ParcelData (
     street VARCHAR(50),
     city VARCHAR(50),
-    zip  INT,
-    pid DECIMAL(9, 4) UNIQUE,
+    zip INT,
 
-    PRIMARY KEY (street, city, zip)
+    pid VARCHAR(50),
+
+    owner_name VARCHAR(100),
+    gross_sale_price DECIMAL(9, 2),
+    excise_nbr VARCHAR(20),
+    transfer_type VARCHAR(50),
+    prop_use_desc VARCHAR(30),
+    tax_code_area VARCHAR(4),
+    acreage DECIMAL(4,2),
+    InspectionYear INT,
+    row_num INT,
+
+    PRIMARY KEY (street, city, zip, pid)
 );
 
-CREATE TABLE PIDFloorFeature (
-    pid DECIMAL(9, 4),
-    floor_type VARCHAR(10),
-    beds TINYINT,
-    baths TINYINT,
-    fin_area INT,
-    area INT,
+CREATE TABLE ParcelFeature (
+    id INT NOT NULL AUTO_INCREMENT, 
+    pid VARCHAR(50) NOT NULL,
+    feat_code VARCHAR(10),
+    feat_desc VARCHAR(50),
 
-    PRIMARY KEY (pid, floor_type)
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE PIDOwner (
-    
-    pid DECIMAL(9, 4),
+CREATE TABLE ParcelFloor (
+    id INT NOT NULL AUTO_INCREMENT, 
+
+    pid VARCHAR(50) NOT NULL,
+    bldg_num VARCHAR(3),
+    floor VARCHAR(50),
+    sq_ft SMALLINT UNSIGNED,
+    fin_area SMALLINT UNSIGNED,
+    beds TINYINT UNSIGNED,
+    baths DECIMAL(3,1) UNSIGNED,
+
+    PRIMARY KEY (id)
 );
-
-
-/* Queries */
-
-SELECT U.user_name, U.user_id, R.review, R.rating, COUNT(Up.upvoter_user_id) as likes
-FROM User U JOIN Review R USING(user_id) 
-    LEFT JOIN Upvote Up Using(user_id, zip, city, street)
-WHERE R.zip = 99163 AND R.city = "Spokane" AND R.street  = "123 XYZ RD"
-GROUP BY R.user_id 
-ORDER BY likes DESC;
-
-
-
-SELECT U.user_name, U.user_id, R.review, R.rating, COUNT(Up.upvoter_user_id) as likes
-FROM User U JOIN Review R USING(user_id) 
-    LEFT JOIN Upvote Up Using(user_id, zip, city, street)
-WHERE R.zip = 99163 AND R.city = "Spokane" AND R.street  = "123 XYZ RD"
-GROUP BY R.user_id 
-ORDER BY likes DESC;
