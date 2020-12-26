@@ -27,8 +27,8 @@ CREATE TABLE Property (
 
     type VARCHAR(10),
     next_lease_date DATE,
-    bed TINYINT UNSIGNED,
-    bath TINYINT UNSIGNED,
+    beds TINYINT UNSIGNED,
+    baths DECIMAL(3,1) UNSIGNED
     area INT UNSIGNED,
 
     rent DECIMAL(8,2) UNSIGNED,
