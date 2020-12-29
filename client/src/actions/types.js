@@ -12,6 +12,9 @@ export const REMOVE_ALARM = "REMOVE_ALARM";
 // Search
 export const GET_HOUSES = "GET_HOUSES";
 export const GET_HOUSE = "GET_HOUSE";
+export const GET_HOUSES_ERR = "GET_HOUSES_ERR";
+export const GET_HOUSE_ERR = "GET_HOUSE_ERR";
+
 export const LOADING_HOUSES = "LOADING_HOUSES";
 
 // Review

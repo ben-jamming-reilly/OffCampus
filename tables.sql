@@ -4,7 +4,6 @@ DROP TABLE if EXISTS Upvote;
 DROP TABLE if EXISTS Review;
 DROP TABLE if EXISTS Property;
 DROP TABLE if EXISTS User;
-DROP TABLE if EXISTS SpokaneParcel;
 
 
 CREATE TABLE User (
@@ -21,14 +20,14 @@ CREATE TABLE User (
 CREATE TABLE Property (
     street VARCHAR(50),
     city VARCHAR(50),
-    zip INT,
+    zip INT UNSIGNED,
 
     state VARCHAR(2) NOT NULL,
 
-    type VARCHAR(10),
+    type VARCHAR(30),
     next_lease_date DATE,
     beds TINYINT UNSIGNED,
-    baths DECIMAL(3,1) UNSIGNED
+    baths DECIMAL(3,1) UNSIGNED,
     area INT UNSIGNED,
 
     rent DECIMAL(8,2) UNSIGNED,
@@ -44,7 +43,7 @@ CREATE TABLE Review (
     user_id VARCHAR(36),
     street VARCHAR(50),
     city VARCHAR(50),
-    zip  INT,
+    zip  INT UNSIGNED,
 
     review VARCHAR(500),
     rating TINYINT,
@@ -58,7 +57,7 @@ CREATE TABLE Upvote (
     user_id VARCHAR(36),
     street VARCHAR(50),
     city VARCHAR(50),
-    zip  INT,
+    zip  INT UNSIGNED,
     upvoter_user_id VARCHAR(36),
 
     PRIMARY KEY (user_id,  street, city, zip, upvoter_user_id),

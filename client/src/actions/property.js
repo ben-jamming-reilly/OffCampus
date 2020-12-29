@@ -1,4 +1,5 @@
 import axios from "axios";
+import { GET_HOUSE, GET_HOUSE_ERR } from "./types";
 
 import { setAlarm } from "./alarm";
 
@@ -23,6 +24,50 @@ export const newProperty = (formData, file, history) => async (dispatch) => {
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
+      console.error(errors);
+      errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
+    }
+  }
+};
+
+export const newParcelProperty = (formData, property, history) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const body = JSON.stringify({ formData, property });
+
+  try {
+    const res = await axios.post("/api/properties/parcel", body, config);
+
+    history.push(
+      `/property/${property.zip}/${property.city}/${property.street}`
+    );
+    dispatch(setAlarm(res.data.msg, "success"));
+  } catch (err) {
+    if (err.response) {
+      const errors = err.response.data.errors;
+      console.error(errors);
+      errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
+    }
+  }
+};
+
+export const getParcelProperty = (formData) => async (dispatch) => {
+  try {
+    const res = await axios.get(
+      `/api/properties/parcel/${formData.zip}/${formData.city}/${formData.street}`
+    );
+
+    dispatch({ type: GET_HOUSE, payload: res.data });
+  } catch (err) {
+    dispatch({ type: GET_HOUSE_ERR });
+    if (err.response) {
+      const errors = err.response.data.errors;
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }

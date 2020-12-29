@@ -38,7 +38,7 @@ const App = () => {
           <Alarm />
           <Route exact path='/' />
           <section>
-            <Container fluid='sm'>
+            <Container fluid='sm' className='mx-auto px-0'>
               <Switch>
                 <Route exact path='/' component={Landing} />
                 <Route exact path='/auth' component={Auth} />

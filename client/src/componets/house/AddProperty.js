@@ -10,36 +10,35 @@ import Button from "react-bootstrap/Button";
 import Image from "react-bootstrap/Image";
 import InputGroup from "react-bootstrap/InputGroup";
 import Badge from "react-bootstrap/Badge";
+import Spinner from "react-bootstrap/Spinner";
 
-import { newProperty } from "../../actions/property";
+import AddDefaultProperty from "./AddDefaultProperty";
+import AddParcelProperty from "./AddParcelProperty";
 
-const AddProperty = ({ newProperty }) => {
+import { newProperty, getParcelProperty } from "../../actions/property";
+
+const AddProperty = ({
+  getParcelProperty,
+  newProperty,
+  houses: { houses, house, loading },
+}) => {
   const [formData, setFormData] = useState({
     street: "",
-    city: "",
-    zip: 0,
-    state: "",
-    rent: 0,
-    capacity: 0,
-    file_name: "",
+    city: "Spokane",
+    zip: "",
+    state: "WA",
   });
 
-  const history = useHistory();
-  const [previewFile, setPreviewFile] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
+    setIsSearching(true);
 
-    let file = document.getElementById("image").files;
+    console.log(formData);
 
-    if (file) {
-      newProperty(formData, file, history);
-      console.log("Heyu");
-    }
-  };
-
-  const fileOnChange = (e) => {
-    setPreviewFile(URL.createObjectURL(e.target.files[0]));
+    await getParcelProperty(formData);
+    console.log(house);
   };
 
   const onChange = (e) =>
@@ -49,7 +48,7 @@ const AddProperty = ({ newProperty }) => {
     <Fragment>
       <br />
       <Col />
-      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
+      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto px-2'>
         <Row className='float-center mx-auto'>
           <Badge className='float-center display-1' variant='secondary'>
             Add A New Property
@@ -83,6 +82,7 @@ const AddProperty = ({ newProperty }) => {
                   onChange={(e) => onChange(e)}
                   type='text'
                   required
+                  disabled
                   placeholder='City'
                 />
               </Form.Group>
@@ -94,6 +94,7 @@ const AddProperty = ({ newProperty }) => {
                   type='select'
                   as='select'
                   required
+                  disabled
                   placeholder='State'
                 >
                   <option value=''>State</option>
@@ -152,106 +153,58 @@ const AddProperty = ({ newProperty }) => {
               </Form.Group>
             </Form.Row>
             <Form.Row>
-              <Col>
-                <Form.Row>
-                  <Form.Group as={Col}>
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text id='basic-addon1'>
-                          Zip Code
-                        </InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <Form.Control
-                        name='zip'
-                        value={formData.zip}
-                        onChange={(e) => onChange(e)}
-                        placeholder='Zip Code'
-                        type='number'
-                        required
-                        min={0}
-                        max={99999}
-                        step={1}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                  <Form.Group as={Col}>
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text id='basic-addon1'>
-                          <i class='fas fa-dollar-sign'></i>
-                        </InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <Form.Control
-                        name='rent'
-                        value={formData.rent !== 0 ? formData.rent : "Rent"}
-                        onChange={(e) => onChange(e)}
-                        placeholder='Rent'
-                        type='number'
-                        min={0}
-                        max={99999}
-                        step={1}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                  <Form.Group as={Col}>
-                    <InputGroup>
-                      <InputGroup.Prepend>
-                        <InputGroup.Text id='basic-addon1'>
-                          <i class='fas fa-users'></i>
-                        </InputGroup.Text>
-                      </InputGroup.Prepend>
-                      <Form.Control
-                        name='capacity'
-                        value={
-                          formData.capacity !== 0
-                            ? formData.capacity
-                            : "Capacity"
-                        }
-                        onChange={(e) => onChange(e)}
-                        placeholder='Capacity'
-                        type='number'
-                        min={0}
-                        max={99999}
-                        step={1}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                  <Col className='align-text-bottom my-auto pt-2' xs='2'>
-                    <i class='fas fa-image fa-2x'></i>
-                  </Col>
-                  <Form.Group as={Col}>
-                    <Form.File id='image' onChange={fileOnChange} label='' />
-                  </Form.Group>
-                </Form.Row>
-              </Col>
-              <Col className='text-center my-auto'>
-                {previewFile && (
-                  <Image
-                    style={{
-                      minWidth: "10rem",
-                      maxWidth: "15rem",
-                      maxHeight: "15rem",
-                    }}
-                    rounded
-                    src={previewFile}
+              <Form.Group as={Col}>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='basic-addon1'>Zip</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    name='zip'
+                    value={Number(formData.zip) === 0 ? "" : formData.zip}
+                    onChange={(e) => onChange(e)}
+                    placeholder='Zip Code'
+                    type='number'
+                    required
+                    min={0}
+                    max={99999}
+                    maxlength={5}
+                    step={1}
                   />
-                )}
-              </Col>
+                </InputGroup>
+              </Form.Group>
+              <Col />
             </Form.Row>
             <Form.Row className='pt-1'>
               <Col>
                 <Button type='submit' block>
-                  Add Property
+                  Search for Property
                 </Button>
               </Col>
             </Form.Row>
           </Form>
+        </Row>
+        <br />
+        <Row className='float-center mx-auto '>
+          <Col className='text-center py-0 mx-0 px-0'>
+            {!isSearching ? (
+              "asdf"
+            ) : loading ? (
+              <Spinner animation='border' />
+            ) : house ? (
+              <AddParcelProperty property={house} />
+            ) : (
+              <AddDefaultProperty />
+            )}
+            {/*!isSearching ? (
+              ""
+            ) : loading ? (
+              <Spinner animation='border' />
+            ) : house ? (
+              <AddParcelProperty property={house} />
+            ) : (
+             
+            )*/}
+          </Col>
         </Row>
       </Col>
       <Col />
@@ -263,6 +216,10 @@ AddProperty.propTypes = {
   newProperty: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  houses: state.houses,
+});
 
-export default connect(mapStateToProps, { newProperty })(AddProperty);
+export default connect(mapStateToProps, { newProperty, getParcelProperty })(
+  AddProperty
+);

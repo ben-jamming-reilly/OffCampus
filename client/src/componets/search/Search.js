@@ -18,16 +18,24 @@ import Col from "react-bootstrap/Col";
 
 const Search = ({ searchHouses, houses: { houses, loading } }) => {
   const [hasQuery, setHasQuery] = useState(false);
-  const [query, setQuery] = useState("");
+  const [formData, setFormData] = useState({
+    address: "",
+  });
+
+  const onChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (query) {
+
+    if (formData.address) {
       setHasQuery(true);
-      await searchHouses(query);
+      await searchHouses(formData.query);
     }
+
     return;
   };
+
   return (
     <Fragment>
       <br />
@@ -46,16 +54,16 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
               <Form.Control
                 required
                 as='select'
+                name='address'
                 defaultValue='Choose...'
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => onChange(e)}
               >
                 <option value=''>Choose...</option>
                 <option value='all'>All</option>
+                <option value='address'>Address</option>
                 <option value='rent'>Rent</option>
-                <option value='reviews'>Number of Review</option>
-                <option value='capacity'>Tenent Capacity</option>
               </Form.Control>
-              {/*<FormControl type='text' />*/}
+              {/*<Form.Control type='text' />*/}
             </InputGroup>
           </Form>
         </Row>
