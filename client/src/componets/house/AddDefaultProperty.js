@@ -153,7 +153,7 @@ const AddDefaultProperty = ({ propertyDefault, addPropertyFunc }) => {
             )}
           </Col>
         </Form.Row>
-        <Form.Row className='pt-1'>
+        <Form.Row className='text-right'>
           <Col>
             <Button type='submit' block>
               Add Property

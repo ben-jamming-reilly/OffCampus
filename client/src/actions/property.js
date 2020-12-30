@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_HOUSE, GET_HOUSE_ERR } from "./types";
+import { GET_HOUSE, GET_HOUSE_ERR, LOADING_HOUSES } from "./types";
 
 import { setAlarm } from "./alarm";
 
@@ -58,6 +58,7 @@ export const newParcelProperty = (formData, property, history) => async (
 };
 
 export const getParcelProperty = (formData) => async (dispatch) => {
+  dispatch({ type: LOADING_HOUSES });
   try {
     const res = await axios.get(
       `/api/properties/parcel/${formData.zip}/${formData.city}/${formData.street}`

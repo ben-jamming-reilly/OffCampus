@@ -187,7 +187,7 @@ const AddProperty = ({
         <Row className='float-center mx-auto '>
           <Col className='text-center py-0 mx-0 px-0'>
             {!isSearching ? (
-              "asdf"
+              ""
             ) : loading ? (
               <Spinner animation='border' />
             ) : house ? (
@@ -195,15 +195,6 @@ const AddProperty = ({
             ) : (
               <AddDefaultProperty />
             )}
-            {/*!isSearching ? (
-              ""
-            ) : loading ? (
-              <Spinner animation='border' />
-            ) : house ? (
-              <AddParcelProperty property={house} />
-            ) : (
-             
-            )*/}
           </Col>
         </Row>
       </Col>

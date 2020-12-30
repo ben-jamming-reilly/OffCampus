@@ -32,6 +32,7 @@ export default function (state = initialState, action) {
     case GET_HOUSE_ERR:
       return {
         ...state,
+        house: null,
         loading: false,
       };
     case LOADING_HOUSES:

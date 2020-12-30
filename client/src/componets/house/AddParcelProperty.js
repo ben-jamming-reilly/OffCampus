@@ -6,6 +6,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
+import InputGroup from "react-bootstrap/InputGroup";
 
 import House from "./House";
 
@@ -17,8 +18,9 @@ const AddParcelProperty = ({ property }) => {
     zip: "",
     state: "",
     type: "",
-    rent: 0,
+    rent: null,
   });
+  const [isClicked, setIsClicked] = useState(false);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,10 +42,33 @@ const AddParcelProperty = ({ property }) => {
             <Form onSubmit={onSubmit}>
               <Form.Row>
                 <Form.Group as={Col}>
-                  <Form.Control name='type' value={formData.type} required />
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id='basic-addon1'>
+                        <i class='fas fa-dollar-sign'></i>
+                      </InputGroup.Text>
+                    </InputGroup.Prepend>
+
+                    <Form.Control
+                      name='rent'
+                      type='number'
+                      value={formData.rent}
+                      placeholder='Rent'
+                      required
+                    />
+                  </InputGroup>
                 </Form.Group>
                 <Form.Group as={Col}>
-                  <Form.Control name='type' value={formData.type} required />
+                  <InputGroup>
+                    <InputGroup.Prepend>
+                      <InputGroup.Text id='basic-addon1'>Type</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control type='select' as='select' required>
+                      <option value=''>...</option>
+                      <option value='house'>House</option>
+                      <option value='apartment'>Apartment</option>
+                    </Form.Control>
+                  </InputGroup>
                 </Form.Group>
               </Form.Row>
               <Form.Row>
@@ -54,14 +79,20 @@ const AddParcelProperty = ({ property }) => {
             </Form>
           </Card.Body>
         </Accordion.Collapse>
-        <Card.Footer className='py-0 px-0 text-center bg-primary'>
+        <Card.Footer className='py-0 px-0 text-center bg-secondary my-0'>
           <Accordion.Toggle
-            as={Button}
             eventKey='0'
             className='px-0'
-            style={{ width: "100%" }}
+            style={{ width: "100%", margin: "0px" }}
           >
-            Add Property
+            <Button
+              block
+              variant='secondary'
+              style={{ height: "100%", width: "100%" }}
+              onClick={(e) => setIsClicked(!isClicked)}
+            >
+              {!isClicked ? "Add Property" : "Close"}
+            </Button>
           </Accordion.Toggle>
         </Card.Footer>
       </Card>
