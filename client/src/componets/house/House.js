@@ -49,15 +49,26 @@ const House = ({ data, showLink }) => {
           </Col>
           <Col className='my-auto ml-1'>
             <ListGroup variant='flush' className='py-0 '>
-              <ListGroup.Item className='py-1'>
-                Rent: ${data.rent}
-              </ListGroup.Item>
-              <ListGroup.Item className='py-1'>
-                Beds: {data.beds} Baths: {data.baths}
-              </ListGroup.Item>
-              <ListGroup.Item className='py-1'>
-                Area: {data.area}ft<sup>2</sup>
-              </ListGroup.Item>
+              {data.rent && (
+                <ListGroup.Item className='py-1'>
+                  Rent: ${data.rent}
+                </ListGroup.Item>
+              )}
+              {data.beds && (
+                <ListGroup.Item className='py-1'>
+                  Beds: {data.beds}
+                </ListGroup.Item>
+              )}
+              {data.baths && (
+                <ListGroup.Item className='py-1'>
+                  Baths: {data.baths}
+                </ListGroup.Item>
+              )}
+              {data.area && (
+                <ListGroup.Item className='py-1'>
+                  Area: {data.area}ft<sup>2</sup>
+                </ListGroup.Item>
+              )}
               {showLink && (
                 <ListGroup.Item className='py-1'>
                   <Link
