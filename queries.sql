@@ -27,3 +27,29 @@ WHERE zip = "99207"
     AND street SOUNDS LIKE "733 E INDIANA AVE"
 ORDER BY STRCMP(SOUNDEX(street), SOUNDEX("733 E INDIANA AVE"))
 \G
+
+
+
+-- asdfasfdsdafa 
+
+SELECT pid, SUM(beds) as beds, SUM(baths) as baths, 43560 * acreage as area
+        FROM ParcelData JOIN ParcelFloor USING(pid) 
+        WHERE street = ? AND city = ? AND zip = ? 
+        GROUP BY street, city, zip; 
+
+INSERT INTO Property 
+(street, city, zip, state, type, next_lease_date, beds, baths, area, rent, file_name, pic_link, verified)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); 
+
+
+INSERT INTO Property (street, city, zip, state, beds, baths, area, pic_link, verified) 
+SELECT street, city, zip, 'WA', SUM(beds) as beds, SUM(baths) as baths, 43560 * acreage as area, CONCAT('https://cp.spokanecounty.org/Assessor/ParcelImages/default.aspx?txtSelParcel=', pid) as pic_link, true 
+FROM ParcelData JOIN ParcelFloor USING(pid)
+WHERE street = ANY(
+    SELECT street
+    FROM ParcelData PD1
+        JOIN ParcelData PD2 using(street, city, zip)
+    GROUP BY street, city, zip
+    HAVING COUNT(*) = 1
+)
+GROUP BY street, city, zip, pid; 

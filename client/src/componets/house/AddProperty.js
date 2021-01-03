@@ -35,10 +35,23 @@ const AddProperty = ({
     e.preventDefault();
     setIsSearching(true);
 
-    console.log(formData);
+    // Confirm with regex this is an address
+    if (/\w+(\s\w+){2,}/.exec(formData.street)) {
+      // Conform Query to DB Standards
+      let parse = formData.street.split(/\s+/);
+      let std_street = "";
 
-    await getParcelProperty(formData);
-    console.log(house);
+      parse.forEach((part) => {
+        std_street += part.toUpperCase();
+        if (part !== parse[parse.length - 1]) {
+          std_street += " ";
+        }
+      });
+
+      await getParcelProperty({ ...formData, street: std_street });
+    } else {
+      console.error("REGEX ERROR");
+    }
   };
 
   const onChange = (e) =>

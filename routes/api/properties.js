@@ -10,7 +10,7 @@ const uploads = require("../../middleware/uploads");
 // GET all properties
 router.get("/", async (req, res) => {
   try {
-    const [rows, fields] = await db.query("SELECT * FROM Property; ");
+    const [rows, fields] = await db.query("SELECT * FROM Property LIMIT 50; ");
 
     return res.status(200).json(rows);
   } catch (err) {
@@ -198,6 +198,7 @@ router.get("/parcel/:zip/:city/:street", async (req, res) => {
 });
 
 // Performs a search by address, for parcels
+// This will be gotten rid of
 router.get("/parcel/search/:zip/:city/:street/:page", async (req, res) => {
   const { street, city, zip, page } = req.params;
   const page_requests = 10;
@@ -234,10 +235,36 @@ router.get("/parcel/search/:zip/:city/:street/:page", async (req, res) => {
 
 // Performs a search by address
 router.get("/search/:zip/:city/:street/:page", async (req, res) => {
-  const { street, city, zip } = req.params;
+  const { street, city, zip, page } = req.params;
   const page_requests = 10;
+  const page_offset = page_requests * page;
 
   try {
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT pid, SUM(beds) AS beds, SUM(baths) AS baths, ROUND(acreage * 43560, 0) AS area " +
+        "FROM ParcelData JOIN ParcelFloor USING(pid) " +
+        "WHERE street = ? AND city = ? AND zip = ? " +
+        "GROUP BY street, city, zip, pid " +
+        "LIMIT ?, ?; ",
+      [street, city, zip, page_offset, page_requests]
+    );
+
+    const [
+      rows2,
+      fields2,
+    ] = await db.query(
+      "SELECT pid, SUM(beds) AS beds, SUM(baths) AS baths, ROUND(acreage * 43560, 0) AS area " +
+        "FROM ParcelData JOIN ParcelFloor USING(pid) " +
+        "WHERE street = ? AND city = ? AND zip = ? " +
+        "GROUP BY street, city, zip, pid " +
+        "LIMIT ?, ?; ",
+      [street, city, zip, page_offset, page_requests]
+    );
+
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server Error");
