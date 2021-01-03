@@ -12,9 +12,11 @@ const db = require("../../utils/db");
 router.get("/", auth, async (req, res) => {
   const id = req.user.id;
   try {
-    const [rows, fields] = await db.query(
-      "" +
-        "SELECT user_id as id, first_name, last_name, user_name, email " +
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT user_id as id, first_name, last_name, user_name, email " +
         "FROM User WHERE user_id = ?; ",
       [id]
     );

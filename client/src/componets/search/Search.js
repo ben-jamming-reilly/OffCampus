@@ -30,7 +30,8 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
 
     if (formData.address) {
       setHasQuery(true);
-      await searchHouses(formData.query);
+      console.log(formData);
+      await searchHouses();
     }
 
     return;

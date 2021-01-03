@@ -3,7 +3,7 @@ import { GET_HOUSES, GET_HOUSE, LOADING_HOUSES } from "./types";
 
 import { setAlarm } from "./alarm";
 
-export const searchHouses = (choice) => async (dispatch) => {
+export const searchHouses = (choice = null) => async (dispatch) => {
   dispatch({ type: LOADING_HOUSES });
   try {
     let res = undefined;
@@ -15,6 +15,7 @@ export const searchHouses = (choice) => async (dispatch) => {
     } else if (choice === "capacity") {
       res = await axios.get("/api/properties/capacity");
     } else {
+      console.log("Here");
       res = await axios.get("/api/properties");
     }
 

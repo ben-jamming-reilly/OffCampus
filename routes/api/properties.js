@@ -164,7 +164,7 @@ router.get("/parcel/:zip/:city/:street", async (req, res) => {
       "SELECT pid, SUM(beds) as beds, SUM(baths) as baths, 43560 * acreage as area " +
         "FROM ParcelData JOIN ParcelFloor USING(pid) " +
         "WHERE street = ? AND city = ? AND zip = ? " +
-        "GROUP BY street, city, zip; ",
+        "GROUP BY street, city, zip, pid; ",
       [street, city, zip]
     );
 

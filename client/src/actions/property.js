@@ -69,7 +69,6 @@ export const getParcelProperty = (formData) => async (dispatch) => {
     dispatch({ type: GET_HOUSE_ERR });
     if (err.response) {
       const errors = err.response.data.errors;
-      console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }
   }

@@ -16,7 +16,7 @@ SELECT pid, SUM(beds) AS beds, SUM(baths) AS baths, ROUND(acreage * 43560, 0) AS
 FROM ParcelData
     JOIN ParcelFloor USING(pid)
 WHERE street = "733 E INDIANA AVE" AND city = "SPOKANE" AND zip = "99207"  
-GROUP BY street, city, zip \G
+GROUP BY street, city, zip, pid \G
 
 -- Fuzzy parcel search
 
