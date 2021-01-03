@@ -63,6 +63,32 @@ router.post("/", [auth, uploads.single("image")], async (req, res) => {
         .json({ errors: [{ msg: "Property already exists." }] });
     }
 
+    // sanitize provided property data for entering into database
+    
+    if (form.street.length > 50) {
+      return res
+        .status(405)
+        .json({ errors: [{ msg: "Provided street name too large to be processed." }] });
+    }
+
+    if (form.city.length > 50) {
+      return res
+        .status(405)
+        .json({ errors: [{ msg: "Provided city name too large to be processed." }] });
+    }
+
+    if (form.state.length > 2) {
+      return res
+        .status(405)
+        .json({ errors: [{ msg: "Provided state name too large to be processed." }] });
+    }
+
+    if (form.type.length > 30) {
+      return res
+        .status(405)
+        .json({ errors: [{ msg: "Provided type description too large to be processed."}] });
+    }
+
     await db.query(
       "INSERT INTO Property " +
         "(street, city, zip, state, type, next_lease_date, " +
