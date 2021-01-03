@@ -21,7 +21,7 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
     >
       <Navbar.Brand style={{ color: "#0275d8" }}>
         <Link to='/'>
-          <h2 style={{ fontWeight: "bolder" }}>RateMyLandLord</h2>
+          <h2 style={{ fontWeight: "bolder" }}>OffCampus</h2>
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
