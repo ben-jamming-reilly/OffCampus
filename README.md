@@ -1,6 +1,6 @@
-# RateMyLandlord
+# OffCampus
 
-A simple web app to for college students to find cheap affordable off-campus housing. RML is inspired by RateMyProfessor in the sense of commuity review. Post houses you've lived in and look at other peoples experiences at that house. Lastly, get connected with a landlord.
+A simple web app to for college students to find cheap affordable off-campus housing. OffCampus is inspired by RateMyProfessor in the sense of commuity review. Post houses you've lived in and look at other peoples experiences at that house. Lastly, get connected with a landlord.
 
 ## To Configure
 
@@ -23,6 +23,11 @@ A simple web app to for college students to find cheap affordable off-campus hou
     "jwtSecret": "[JWT_SECRET_PASSPHRASE]"
   }
   ```
+
+  ## About Current DB
+
+  - Only for development are we running a mysql server locally, officially off of gonzaga :). I have a file which contains all of the Data from the cps-database. If others join I will add them later.
+  - I am sticking with MySQL for now, although I hope to change that. Plans are to deploy initially with MySQL or MariaDB, the first MVP, then finally switching the code base to Postgres afterwards.
 
 ## To Run
 
