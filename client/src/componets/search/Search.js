@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 // Actions
@@ -72,17 +73,42 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
         <Row className='mx-auto '>
           {!hasQuery ? (
             ""
-          ) : loading ? (
-            <Col className='text-center'>
-              <br />
-              <Spinner animation='border' />
-            </Col>
           ) : (
-            houses.map((h) => (
-              <Col xs='12'>
-                <House data={h} showLink={true} />
+            <Fragment>
+              {houses.map((h) => (
+                <Col xs='12' className='my-2'>
+                  <House data={h} showLink={true} />
+                </Col>
+              ))}
+
+              {loading && (
+                <Col className='text-center'>
+                  <br />
+                  <Spinner animation='border' />
+                </Col>
+              )}
+              {!loading && (
+                <Col xs='12' className='my-2'>
+                  <Button
+                    variant='outline-primary'
+                    block
+                    className='font-weight-bold'
+                  >
+                    Load More
+                  </Button>
+                </Col>
+              )}
+              {!loading && (
+                <Col xs='12' className='text-center'>
+                  <h4>
+                    <Link to='/property/add'>Add Property</Link>
+                  </h4>
+                </Col>
+              )}
+              <Col>
+                <br />
               </Col>
-            ))
+            </Fragment>
           )}
         </Row>
       </Col>
