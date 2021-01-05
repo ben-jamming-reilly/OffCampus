@@ -19,9 +19,9 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
       sticky='top'
       style={{ paddingTop: "0", paddingBottom: "0" }}
     >
-      <Navbar.Brand style={{ color: "#0275d8" }}>
+      <Navbar.Brand style={{ color: "#0275d8" }} className='mr-0'>
         <Link to='/'>
-          <h2 style={{ fontWeight: "bolder" }}>OffCampus: Gonzaga</h2>
+          <h3 style={{ fontWeight: "bolder" }}>OffCampus: Gonzaga</h3>
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
