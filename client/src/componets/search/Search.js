@@ -17,23 +17,32 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-const Search = ({ searchHouses, houses: { houses, loading } }) => {
-  const [hasQuery, setHasQuery] = useState(false);
+const Search = ({
+  searchHouses,
+  houses: { houses, loading, page, endOfQuery },
+}) => {
+  const [sentQuery, setSentQuery] = useState(false);
   const [formData, setFormData] = useState({
-    address: "",
+    street: "",
+    city: "Spokane",
+    zip: 0,
+    state: "WA",
+    search: "address",
   });
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onLoadMore = (e) => {
+    searchHouses(formData, page);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.address) {
-      setHasQuery(true);
-      console.log(formData);
-      await searchHouses();
-    }
+    setSentQuery(true);
+    console.log(formData);
+    searchHouses(formData, page);
 
     return;
   };
@@ -47,31 +56,55 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
       <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
         <Row className='float-center'>
           <Form style={{ width: "100%" }} onSubmit={(e) => onSubmit(e)}>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <Button variant='outline-secondary' type='submit'>
-                  <i class='fas fa-search'></i>
-                </Button>
-              </InputGroup.Prepend>
-              <Form.Control
-                required
-                as='select'
-                name='address'
-                defaultValue='Choose...'
-                onChange={(e) => onChange(e)}
-              >
-                <option value=''>Choose...</option>
-                <option value='all'>All</option>
-                <option value='address'>Address</option>
-                <option value='rent'>Rent</option>
-              </Form.Control>
-              {/*<Form.Control type='text' />*/}
-            </InputGroup>
+            <Form.Group as={Col}>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <Button variant='outline-secondary' type='submit'>
+                    <i class='fas fa-search'></i>
+                  </Button>
+                </InputGroup.Prepend>
+                <Form.Control
+                  style={{ width: "4rem" }}
+                  className='text-center px-0'
+                  type='text'
+                  required
+                  name='street'
+                  placeholder='Street'
+                  onChange={(e) => onChange(e)}
+                />
+                <Form.Control
+                  className='text-center px-0'
+                  type='text'
+                  required
+                  name='city'
+                  value={formData.city}
+                  onChange={(e) => onChange(e)}
+                  disabled
+                />
+                <Form.Control
+                  className='text-center px-0'
+                  type='text'
+                  required
+                  name='state'
+                  value={formData.state}
+                  onChange={(e) => onChange(e)}
+                  disabled
+                />
+                <Form.Control
+                  className='text-center px-0'
+                  type='number'
+                  required
+                  name='zip'
+                  value={formData.zip}
+                  onChange={(e) => onChange(e)}
+                />
+              </InputGroup>
+            </Form.Group>
           </Form>
         </Row>
         {/* This is where the house result will go */}
-        <Row className='mx-auto '>
-          {!hasQuery ? (
+        <Row className='mx-auto text-center'>
+          {!sentQuery ? (
             ""
           ) : (
             <Fragment>
@@ -87,12 +120,13 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
                   <Spinner animation='border' />
                 </Col>
               )}
-              {!loading && (
+              {!loading && !endOfQuery && (
                 <Col xs='12' className='my-2'>
                   <Button
                     variant='outline-primary'
                     block
                     className='font-weight-bold'
+                    onClick={(e) => onLoadMore()}
                   >
                     Load More
                   </Button>
@@ -106,6 +140,8 @@ const Search = ({ searchHouses, houses: { houses, loading } }) => {
                 </Col>
               )}
               <Col>
+                <br />
+                <br />
                 <br />
               </Col>
             </Fragment>

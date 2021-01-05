@@ -235,21 +235,27 @@ router.get("/parcel/search/:zip/:city/:street/:page", async (req, res) => {
 
 // Performs a search by address
 router.get("/search/:zip/:city/:street/:page", async (req, res) => {
-  const { street, city, zip, page } = req.params;
+  // This is up for change
   const page_requests = 10;
+
+  const { street, city, zip, page } = req.params;
   const page_offset = page_requests * page;
 
   try {
+    let endOfQuery = false;
+
     const [rows, fields] = await db.query(
       "SELECT * " +
         "FROM Property " +
-        "WHERE SOUNDEX(street) LIKE CONCAT('%', SUBSTRING(SOUNDEX(?), 2) AND city = ? AND zip = ? " +
-        "ORDER BY ABS(CAST(SUBSTRING(street, 1, 4) AS SIGNED) - CAST(SUBSTRING(?, 1, 4) AS SIGNED))" +
+        "WHERE SOUNDEX(street) LIKE CONCAT('%', SUBSTRING(SOUNDEX(?), 2), '%') AND city = ? AND zip = ? " +
+        "ORDER BY ABS(CAST(SUBSTRING(street, 1, 4) AS SIGNED) - CAST(SUBSTRING( ?, 1, 4) AS SIGNED))" +
         "LIMIT ?, ?; ",
       [street, city, zip, street, page_offset, page_requests]
     );
 
-    return res.status(200).json(rows);
+    if (rows.length < page_requests) endOfQuery = true;
+
+    return res.status(200).json({ properties: rows, endOfQuery: endOfQuery });
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server Error");

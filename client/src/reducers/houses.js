@@ -1,5 +1,6 @@
 import {
   GET_HOUSES,
+  GET_MORE_HOUSES,
   GET_HOUSE,
   LOADING_HOUSES,
   GET_HOUSE_ERR,
@@ -10,6 +11,8 @@ const initialState = {
   houses: [],
   house: null,
   loading: true,
+  endOfQuery: false,
+  page: 0,
 };
 
 export default function (state = initialState, action) {
@@ -21,6 +24,16 @@ export default function (state = initialState, action) {
         ...state,
         houses: payload,
         loading: false,
+        endOfQuery: false,
+        page: 1,
+      };
+    case GET_MORE_HOUSES:
+      return {
+        ...state,
+        houses: state.houses.concat(payload.properties),
+        loading: false,
+        endOfQuery: payload.endOfQuery,
+        page: state.page + 1,
       };
     case GET_HOUSE:
       return {
@@ -32,6 +45,7 @@ export default function (state = initialState, action) {
     case GET_HOUSE_ERR:
       return {
         ...state,
+        houses: [],
         house: null,
         loading: false,
       };
