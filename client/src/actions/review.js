@@ -113,31 +113,6 @@ export const unlikeReview = (review, property) => async (dispatch) => {
   }
 };
 
-// OLD, get rid of this
-export const addNewReview = (formData, file, history) => async (dispatch) => {
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
-  const body = new FormData();
-  body.append("image", file[0]);
-  body.append("data", JSON.stringify(formData));
-
-  try {
-    await axios.post("/api/properties", body, config);
-
-    // On success
-    history.push(`/property/${formData.address}`);
-  } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      console.error(errors);
-      errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
-    }
-  }
-};
-
 export const addReview = (formData, user, property) => async (dispatch) => {
   const config = {
     headers: {

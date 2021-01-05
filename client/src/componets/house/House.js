@@ -18,7 +18,7 @@ const House = ({ data, showLink }) => {
   return (
     <div style={{ padding: "0px 0px 0px 0px" }}>
       <Card className='mx-auto text-center'>
-        <Card.Header border='primary' className='py-0'>
+        <Card.Header border='primary' className='py-0 text-truncate'>
           {data.street}, {data.city}, {data.state} {String(data.zip)}
         </Card.Header>
         <Card.Body as={Row} className='py-0 px-0'>

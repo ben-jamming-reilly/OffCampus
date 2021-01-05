@@ -5,11 +5,13 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
 import ReactStars from "react-stars";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
   const [formData, setFormData] = useState({
     review: "",
     rating: 0,
+    captcha: "",
   });
 
   const onChange = (e) =>
@@ -20,7 +22,10 @@ const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
 
     if (formData.rating > 0 && user) {
       addReviewFunc(formData, user, property);
+    } else if (formData.captcha) {
+      console.log(formData);
     } else if (!user) {
+      console.log(formData);
       alarmFunc("You must login to post a review", "danger");
     } else {
       console.log("Error");
@@ -51,7 +56,17 @@ const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
             half={false}
           />
         </Col>
-        <Col xs='4' className='py-1 float-right'>
+      </Form.Row>
+      <Form.Row className='py-0'>
+        <Col xs='6' className='py-1 float-right'>
+          <ReCAPTCHA
+            sitekey='6LfkPCEaAAAAAErMd08ve2nZ48ZSqhMMuJurQxH3'
+            onChange={(value) =>
+              setFormData({ ...formData, ["captcha"]: value })
+            }
+          />
+        </Col>
+        <Col className='text-center my-auto'>
           <Button type='submit'>Post Review</Button>
         </Col>
       </Form.Row>

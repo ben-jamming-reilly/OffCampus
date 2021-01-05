@@ -22,6 +22,7 @@ const Search = ({
   houses: { houses, loading, page, endOfQuery },
 }) => {
   const [sentQuery, setSentQuery] = useState(false);
+  const [hasSentQuery, setHasSentQuery] = useState(false);
   const [formData, setFormData] = useState({
     street: "",
     city: "Spokane",
@@ -30,8 +31,10 @@ const Search = ({
     search: "address",
   });
 
-  const onChange = (e) =>
+  const onChange = (e) => {
+    setHasSentQuery(false);
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const onLoadMore = (e) => {
     searchHouses(formData, page);
@@ -40,9 +43,14 @@ const Search = ({
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    if (hasSentQuery) {
+      searchHouses(formData, page);
+    } else {
+      searchHouses(formData, 0);
+    }
+
     setSentQuery(true);
     console.log(formData);
-    searchHouses(formData, page);
 
     return;
   };
@@ -109,7 +117,7 @@ const Search = ({
           ) : (
             <Fragment>
               {houses.map((h) => (
-                <Col xs='12' className='my-2'>
+                <Col xs='12' className='my-2 px-0'>
                   <House data={h} showLink={true} />
                 </Col>
               ))}
@@ -121,7 +129,7 @@ const Search = ({
                 </Col>
               )}
               {!loading && !endOfQuery && (
-                <Col xs='12' className='my-2'>
+                <Col xs='12' className='my-2 px-0'>
                   <Button
                     variant='outline-primary'
                     block

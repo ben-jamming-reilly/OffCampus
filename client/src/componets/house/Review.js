@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import ReactStars from "react-stars";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
   const onClick = (e) => {
