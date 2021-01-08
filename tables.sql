@@ -7,23 +7,20 @@ DROP TABLE if EXISTS User;
 
 
 CREATE TABLE User (
-    user_id VARCHAR(36),
-    first_name VARCHAR(20),
-    last_name VARCHAR(20),
-    user_name VARCHAR(20) NOT NULL UNIQUE,
+    user_id CHAR(36),
+
     email VARCHAR(80) NOT NULL UNIQUE,
-    password VARCHAR(60) NOT NULL,
+    password CHAR(60) NOT NULL,
 
     PRIMARY KEY (user_id)
 );
 
 CREATE TABLE Property (
-    street VARCHAR(50),
-    city VARCHAR(50),
-    zip INT UNSIGNED,
+    street VARCHAR(64),
+    city VARCHAR(64),
+    zip VARCHAR(6),
 
-    state VARCHAR(2) NOT NULL,
-
+    state CHAR(2) NOT NULL,
     type VARCHAR(30),
     next_lease_date DATE,
     beds TINYINT UNSIGNED,
@@ -32,7 +29,7 @@ CREATE TABLE Property (
 
     rent DECIMAL(8,2) UNSIGNED,
 
-    file_name VARCHAR(100),
+    file_name VARCHAR(255),
     pic_link VARCHAR(100),
     verified BOOLEAN,
 
@@ -40,29 +37,30 @@ CREATE TABLE Property (
 );
 
 CREATE TABLE Review (
-    user_id VARCHAR(36),
-    street VARCHAR(50),
-    city VARCHAR(50),
-    zip  INT UNSIGNED,
+    review_id INT UNSIGNED AUTO_INCREMENT,
 
-    review VARCHAR(500),
-    rating TINYINT,
+    user_id CHAR(36) NULL,
 
-    PRIMARY KEY (user_id, street, city, zip),
-    FOREIGN KEY (street, city, zip) REFERENCES Property(street, city, zip),
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    street VARCHAR(64),
+    city VARCHAR(64),
+    zip VARCHAR(6),
+
+    body VARCHAR(500),
+    rating DECIMAL(3,1) UNSIGNED,
+    post_date DATE,
+
+    PRIMARY KEY (review_id),
+    FOREIGN KEY (user_id) REFERENCES User (user_id),
+    FOREIGN Key (street, city, zip) REFERENCES Property (street, city, zip)
 );
 
 CREATE TABLE Upvote (
-    user_id VARCHAR(36),
-    street VARCHAR(50),
-    city VARCHAR(50),
-    zip  INT UNSIGNED,
-    upvoter_user_id VARCHAR(36),
+    review_id INT UNSIGNED,
+    user_id CHAR(36),
 
-    PRIMARY KEY (user_id,  street, city, zip, upvoter_user_id),
-    FOREIGN KEY (user_id) REFERENCES User (user_id),
-    FOREIGN KEY (user_id, street, city, zip) REFERENCES Review (user_id, street, city, zip)
+    PRIMARY KEY (review_id, user_id),
+    FOREIGN KEY (review_id) REFERENCES Review (review_id),
+    FOREIGN KEY (user_id) REFERENCES User (user_id)
 );
 
 /* City of Spokane Tax Info */
