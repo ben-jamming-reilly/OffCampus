@@ -9,6 +9,8 @@ DROP TABLE if EXISTS User;
 CREATE TABLE User (
     user_id CHAR(36),
 
+    first_name VARCHAR(32) NULL,
+    last_name VARCHAR(32) NULL,
     email VARCHAR(80) NOT NULL UNIQUE,
     password CHAR(60) NOT NULL,
 

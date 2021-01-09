@@ -54,7 +54,7 @@ const HousePage = ({
     <Fragment>
       <br />
       <Col />
-      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto px-0'>
+      <Col sm='12' md='10' lg='8' xl='8' className='mx-auto'>
         <Row className='float-center'>
           {houses.loading || !houses.house ? (
             <Col className='text-center'>
@@ -91,8 +91,9 @@ const HousePage = ({
                     )}
                   </Card.Body>
                 </Accordion.Collapse>
-                <Card.Footer className='py-0 px-0 text-center bg-primary'>
+                <Card.Footer className='py-0 px-0 text-center'>
                   <Accordion.Toggle
+                    variant='secondary'
                     as={Button}
                     eventKey='0'
                     className='px-0'

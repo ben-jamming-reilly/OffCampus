@@ -58,16 +58,16 @@ const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
         </Col>
       </Form.Row>
       <Form.Row className='py-0'>
-        <Col xs='6' className='py-1 float-right'>
+        <Col xs='12' md='6' className='py-1 text-center'>
           <ReCAPTCHA
             sitekey='6LfkPCEaAAAAAErMd08ve2nZ48ZSqhMMuJurQxH3'
-            onChange={(value) =>
-              setFormData({ ...formData, ["captcha"]: value })
-            }
+            onChange={(value) => setFormData({ ...formData, captcha: value })}
           />
         </Col>
-        <Col className='text-center my-auto'>
-          <Button type='submit'>Post Review</Button>
+        <Col xs='12' md='6' className='text-center my-auto'>
+          <Button variant='primary' type='submit'>
+            Post Review
+          </Button>
         </Col>
       </Form.Row>
     </Form>

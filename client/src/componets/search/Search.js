@@ -26,7 +26,7 @@ const Search = ({
   const [formData, setFormData] = useState({
     street: "",
     city: "Spokane",
-    zip: 0,
+    zip: "",
     state: "WA",
     search: "address",
   });
@@ -102,6 +102,7 @@ const Search = ({
                   className='text-center px-0'
                   type='number'
                   required
+                  placeholder='Zip Code'
                   name='zip'
                   value={formData.zip}
                   onChange={(e) => onChange(e)}
@@ -123,7 +124,7 @@ const Search = ({
               ))}
 
               {loading && (
-                <Col className='text-center'>
+                <Col xs='12' className='text-center'>
                   <br />
                   <Spinner animation='border' />
                 </Col>
@@ -143,7 +144,12 @@ const Search = ({
               {!loading && (
                 <Col xs='12' className='text-center'>
                   <h4>
-                    <Link to='/property/add'>Add Property</Link>
+                    <Link
+                      to='/property/add'
+                      className='text-danger font-weight-bold'
+                    >
+                      Add Property
+                    </Link>
                   </h4>
                 </Col>
               )}

@@ -117,6 +117,7 @@ export const addReview = (formData, user, property) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      "x-captcha": formData.captcha,
     },
   };
 

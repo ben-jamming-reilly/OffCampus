@@ -16,8 +16,7 @@ router.get("/", auth, async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT user_id as id, first_name, last_name, user_name, email " +
-        "FROM User WHERE user_id = ?; ",
+      "SELECT user_id as id, email FROM User WHERE user_id = ?; ",
       [id]
     );
 
@@ -71,30 +70,20 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { first_name, last_name, user_name, email, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const [
       rows,
       fields,
-    ] = await db.query(
-      "SELECT user_name FROM User WHERE email = ? OR user_name = ?; ",
-      [email, user_name]
-    );
+    ] = await db.query("SELECT user_name FROM User WHERE email = ?; ", [email]);
 
     // Confirm that email or user_name have not been registered
     if (rows.length > 0) {
-      if (rows[0].user_name === user_name) {
-        console.log("Username collision");
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Username already taken." }] });
-      } else {
-        console.log("Email collision");
-        return res
-          .status(400)
-          .json({ errors: [{ msg: "Email already registered" }] });
-      }
+      console.log("Email collision");
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Email already registered" }] });
     }
 
     const salt = await bcrypt.genSalt(10);
