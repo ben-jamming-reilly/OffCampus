@@ -90,6 +90,8 @@ router.post("/", [auth, uploads.single("image")], async (req, res) => {
     console.error(err.message);
 
     // Remove property image from uploads/ dir
+    // This needs to point to the actual uploads dir/
+    // This will error whenever there is an error
     fs.unlink(req.file.filename, (err) => {
       console.error(err);
     });

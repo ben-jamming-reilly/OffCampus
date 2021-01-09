@@ -62,3 +62,11 @@ WHERE SOUNDEX(street) LIKE CONCAT('%', SUBSTRING(SOUNDEX('733 E INDIANA AVE'), 2
 ORDER BY ABS(CAST(SUBSTRING(street, 1, 4) AS SIGNED) - CAST(SUBSTRING('733 E INDIANA AVE', 1, 4) AS SIGNED))
 LIMIT 0, 10
 \G
+
+
+SELECT R.body as review, R.rating, COUNT(Up.user_id) as likes 
+FROM Review R
+    LEFT JOIN Upvote Up USING (review_id)
+WHERE R.zip = '99207' AND R.city = 'Spokane' AND R.street  = '733 E INDIANA AVE' 
+GROUP BY R.user_id 
+ORDER BY likes DESC;

@@ -94,17 +94,17 @@ router.post("/unlike", auth, async (req, res) => {
 router.get("/:zip/:city/:street", async (req, res) => {
   const { zip, city, street } = req.params;
   try {
-    let [
+    const [
       rows,
       fields,
     ] = await db.query(
-      "SELECT U.user_name, U.user_id, R.review, R.rating, COUNT(Up.upvoter_user_id) as likes " +
+      "SELECT U.user_id, R.body as review, R.rating, COUNT(Up.user_id) as likes " +
         "FROM User U JOIN Review R USING(user_id) " +
         "LEFT JOIN Upvote Up Using(user_id, zip, city, street) " +
         "WHERE R.zip = ? AND R.city = ? AND R.street  = ? " +
         "GROUP BY R.user_id " +
         "ORDER BY likes DESC; ",
-      [zip, city, street]
+      [String(zip), city, street]
     );
 
     return res.status(200).json(rows);
