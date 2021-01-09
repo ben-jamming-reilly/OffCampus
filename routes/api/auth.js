@@ -16,7 +16,7 @@ router.get("/", auth, async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT user_id as id, email FROM User WHERE user_id = ?; ",
+      "SELECT user_id as id, email, first_name, last_name FROM User WHERE user_id = ?; ",
       [id]
     );
 
@@ -70,13 +70,13 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, first_name, last_name, password } = req.body;
 
   try {
     const [
       rows,
       fields,
-    ] = await db.query("SELECT user_name FROM User WHERE email = ?; ", [email]);
+    ] = await db.query("SELECT user_id FROM User WHERE email = ?; ", [email]);
 
     // Confirm that email or user_name have not been registered
     if (rows.length > 0) {
@@ -91,9 +91,9 @@ router.post("/register", async (req, res) => {
     const id = uuidv4();
 
     await db.query(
-      "INSERT INTO User (user_id, first_name, last_name, user_name, email, password) " +
-        "VALUES (?, ?, ?, ?, ?, ?); ",
-      [id, first_name, last_name, user_name, email, hashPassword]
+      "INSERT INTO User (user_id, first_name, last_name, email, password) " +
+        "VALUES (?, ?, ?, ?, ?); ",
+      [id, first_name, last_name, email, hashPassword]
     );
 
     const payload = {
