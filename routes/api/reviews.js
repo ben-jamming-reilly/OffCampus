@@ -47,17 +47,10 @@ router.post("/like", auth, async (req, res) => {
   const { review, property } = req.body;
 
   try {
-    await db.query(
-      "INSERT INTO Upvote (user_id, street, city, zip, upvoter_user_id) " +
-        "VALUES (?, ?, ?, ?, ?); ",
-      [
-        review.user_id,
-        property.street,
-        property.city,
-        property.zip,
-        req.user.id,
-      ]
-    );
+    await db.query("INSERT INTO Upvote (review_id, user_id) VALUES (?, ?); ", [
+      review.review_id,
+      req.user.id,
+    ]);
 
     return res.status(200).json({ msg: "You just liked a message!" });
   } catch (err) {
@@ -71,17 +64,10 @@ router.post("/unlike", auth, async (req, res) => {
   const { review, property } = req.body;
 
   try {
-    await db.query(
-      "DELETE FROM Upvote " +
-        "WHERE user_id = ? AND street = ? AND city = ? AND zip = ? AND upvoter_user_id = ? ",
-      [
-        review.user_id,
-        property.street,
-        property.city,
-        property.zip,
-        req.user.id,
-      ]
-    );
+    await db.query("DELETE FROM Upvote WHERE review_id = ? AND user_id = ? ", [
+      review.review_id,
+      req.user.id,
+    ]);
 
     return res.status(200).json({ success: true });
   } catch (err) {
@@ -98,11 +84,10 @@ router.get("/:zip/:city/:street", async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT U.user_id, R.body as review, R.rating, COUNT(Up.user_id) as likes " +
-        "FROM User U JOIN Review R USING(user_id) " +
-        "LEFT JOIN Upvote Up Using(user_id, zip, city, street) " +
-        "WHERE R.zip = ? AND R.city = ? AND R.street  = ? " +
-        "GROUP BY R.user_id " +
+      "SELECT review_id, body, rating, post_date, COUNT(Up.user_id) as likes " +
+        "FROM Review LEFT JOIN Upvote Up USING (review_id) " +
+        "WHERE zip = ? AND city = ? AND street  = ? " +
+        "GROUP BY review_id " +
         "ORDER BY likes DESC; ",
       [String(zip), city, street]
     );
@@ -125,34 +110,28 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT U.user_name, U.user_id, R.review, R.rating, COUNT(Up.upvoter_user_id) as likes " +
-        "FROM User U JOIN Review R USING(user_id) " +
-        "LEFT JOIN Upvote Up Using(user_id, zip, city, street) " +
-        "WHERE R.zip = ? AND R.city = ? AND R.street  = ? " +
+      "SELECT review_id, body, rating, post_date, COUNT(Up.user_id) as likes " +
+        "FROM Review LEFT JOIN Upvote Up USING (review_id)" +
+        "WHERE zip = ? AND city = ? AND street  = ?  " +
         "GROUP BY R.user_id " +
         "ORDER BY likes DESC; ",
-      [zip, city, street]
+      [String(zip), city, street]
     );
 
-    let [
-      rows2,
-      fields2,
-    ] = await db.query(
-      "SELECT R.user_id, R.street, R.city, R.zip, COUNT(Up.upvoter_user_id) as likes " +
-        "FROM User U JOIN Review R USING(user_id) " +
-        "LEFT JOIN Upvote Up Using(user_id, zip, city, street) " +
-        "WHERE R.zip = ? AND R.city = ? AND R.street  = ? AND Up.upvoter_user_id = ? " +
+    let [likedReviews, fields2] = await db.query(
+      "SELECT R.review_id " +
+        "FROM Review R JOIN Upvote Up USING (review_id) " +
+        "WHERE R.zip = ? AND R.city = ? AND R.street  = ? AND Up.user_id = ? " +
         "GROUP BY R.user_id " +
         "ORDER BY likes DESC; ",
-      [zip, city, street, id]
+      [String(zip), city, street, id]
     );
 
-    for (let i = 0; i < rows.length; i++) {
-      rows[i].isLiked = false;
-
-      for (let j = 0; j < rows2.length; j++) {
-        if (rows[i].user_id === rows2[j].user_id) {
-          rows[i].isLiked = true;
+    // Sets isLiked for each review
+    for (let i = 0; i < likedReviews.length; i++) {
+      for (let j = 0; j < rows.length; j++) {
+        if (likedReviews[i].review_id === rows[j].review_id) {
+          rows[j].isLiked = true;
           break;
         }
       }

@@ -7,7 +7,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import ReactStars from "react-stars";
-import ReCAPTCHA from "react-google-recaptcha";
 
 const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
   const onClick = (e) => {
@@ -24,9 +23,9 @@ const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
 
   return (
     <Fragment>
-      {data && data != undefined && (
+      {data && data !== undefined && (
         <Card>
-          <Card.Body>{data.review}</Card.Body>
+          <Card.Body>{data.body}</Card.Body>
           <Card.Footer className='py-1'>
             <Row>
               <Col className='text-left align-self-center'>
@@ -36,7 +35,7 @@ const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
                 <ReactStars
                   value={data.rating}
                   size={"30"}
-                  half={false}
+                  half={true}
                   edit={false}
                 />
               </Col>

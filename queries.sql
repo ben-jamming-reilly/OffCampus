@@ -64,9 +64,23 @@ LIMIT 0, 10
 \G
 
 
-SELECT R.body as review, R.rating, COUNT(Up.user_id) as likes 
-FROM Review R
+/* Get all reviews with upvotes*/
+
+SELECT review_id, body, rating, post_date, COUNT(Up.user_id) as likes 
+FROM Review
     LEFT JOIN Upvote Up USING (review_id)
-WHERE R.zip = '99207' AND R.city = 'Spokane' AND R.street  = '733 E INDIANA AVE' 
-GROUP BY R.user_id 
+WHERE zip = '99207' AND city = 'Spokane' AND street  = '733 E INDIANA AVE' 
+GROUP BY review_id 
 ORDER BY likes DESC;
+
+/* Get all the reviews that a user upvoted*/
+
+SELECT R.review_id
+FROM Review R 
+    JOIN Upvote Up USING (review_id)
+WHERE R.zip = '99207'
+    AND R.city = 'SPOKANE'
+    AND R.street = '733 E INDIANA AVE'
+    AND Up.user_id = ''
+GROUP BY R.review_id
+ORDER BY likes DESC; 
