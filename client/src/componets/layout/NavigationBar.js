@@ -22,7 +22,12 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
     >
       <Navbar.Brand style={{ color: "#0275d8" }} className='mr-0'>
         <Link to='/'>
-          <h3 style={{ fontWeight: "bolder" }}>OffCampus: Gonzaga</h3>
+          <h3
+            style={{ fontWeight: "bolder" }}
+            className='align-text-top mb-0 pt-1'
+          >
+            OffCampus: Gonzaga
+          </h3>
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
@@ -59,7 +64,10 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
         </Nav>
         {isAuthenticated && user && (
           <Nav>
-            <Nav.Item className='my-auto align-text-top'>
+            <Nav.Item
+              className='my-auto align-text-top'
+              style={{ padding: "10px" }}
+            >
               <Link to='/me' className='align-text-top'>
                 <h4
                   style={{ fontWeight: "bolder" }}

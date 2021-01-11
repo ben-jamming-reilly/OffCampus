@@ -18,6 +18,7 @@ import Search from "./componets/search/Search";
 import HousePage from "./componets/house/HousePage";
 import Landing from "./componets/landing/Landing";
 import AddProperty from "./componets/house/AddProperty";
+import Credits from "./componets/misc/Credits";
 
 import "./App.css";
 
@@ -49,6 +50,7 @@ const App = () => {
                   component={HousePage}
                 />
                 <Route exact path='/property/add' component={AddProperty} />
+                <Route exact path='/credits' component={Credits} />
               </Switch>
             </Container>
           </section>
