@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
+const captcha = require("../../middleware/captcha");
 const db = require("../../utils/db");
 
 // Add/Update a review for a property
@@ -33,6 +34,25 @@ router.post("/:zip/:city/:street", auth, async (req, res) => {
       "INSERT INTO Review (user_id, zip, city, street, review, rating) " +
         "VALUES (?, ?, ?, ?, ?, ?); ",
       [id, zip, city, street, review, rating]
+    );
+
+    return res.status(201).json({ msg: "Review Added!" });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).send("Server Error");
+  }
+});
+
+// Add a review by captcha
+router.post("/captcha/:zip/:city/:street", captcha, async (req, res) => {
+  const { zip, city, street } = req.params;
+  const { body, rating } = req.body;
+
+  try {
+    await db.query(
+      "INSERT INTO Review (street, city, zip, body, rating, post_date) " +
+        "VALUES ( ?, ?, ?, ?, ?, NOW()); ",
+      [street, city, zip, body, rating]
     );
 
     return res.status(201).json({ msg: "Review Added!" });

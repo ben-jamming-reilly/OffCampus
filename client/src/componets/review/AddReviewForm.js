@@ -13,7 +13,7 @@ const AddReviewForm = ({ property, addReviewFunc, user, alarmFunc }) => {
     rating: 0,
     captcha: "",
   });
-
+  console.log(formData.captcha);
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
