@@ -1,15 +1,13 @@
-import React, { Fragment } from "react";
-import { useHistory, Link } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import ListGroup from "react-bootstrap/ListGroup";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
 
 const House = ({ data, showLink }) => {
-  let history = useHistory();
   /*
   const onClick = () => {
     history.push(`/property/${address}`);

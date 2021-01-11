@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
@@ -11,7 +10,6 @@ import InputGroup from "react-bootstrap/InputGroup";
 import House from "./House";
 
 const AddParcelProperty = ({ property }) => {
-  const history = useHistory();
   const [formData, setFormData] = useState({
     street: "",
     city: "",
@@ -22,8 +20,9 @@ const AddParcelProperty = ({ property }) => {
   });
   const [isClicked, setIsClicked] = useState(false);
 
-  const onChange = (e) =>
+  const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -55,6 +54,7 @@ const AddParcelProperty = ({ property }) => {
                       value={formData.rent}
                       placeholder='Rent'
                       required
+                      onChange={onChange}
                     />
                   </InputGroup>
                 </Form.Group>
@@ -63,7 +63,12 @@ const AddParcelProperty = ({ property }) => {
                     <InputGroup.Prepend>
                       <InputGroup.Text id='basic-addon1'>Type</InputGroup.Text>
                     </InputGroup.Prepend>
-                    <Form.Control type='select' as='select' required>
+                    <Form.Control
+                      type='select'
+                      as='select'
+                      required
+                      onChange={onChange}
+                    >
                       <option value=''>...</option>
                       <option value='house'>House</option>
                       <option value='apartment'>Apartment</option>

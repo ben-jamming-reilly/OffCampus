@@ -7,7 +7,6 @@ import { removeAlarm } from "../../actions/alarm";
 import Alert from "react-bootstrap/Alert";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 
 const Alarm = ({ alarms, removeAlarm }) => {
   console.log(alarms);

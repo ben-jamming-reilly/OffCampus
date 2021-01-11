@@ -65,7 +65,7 @@ export const likeReview = (review, property) => async (dispatch) => {
   const body = JSON.stringify({ review: review, property: property });
 
   try {
-    const res = await axios.post(`/api/reviews/like`, body, config);
+    await axios.post(`/api/reviews/like`, body, config);
     let updateReview = review;
     updateReview.likes++;
     updateReview.isLiked = true;
@@ -94,7 +94,7 @@ export const unlikeReview = (review, property) => async (dispatch) => {
 
   const body = JSON.stringify({ review: review, property: property });
   try {
-    const res = await axios.post(`/api/reviews/unlike`, body, config);
+    await axios.post(`/api/reviews/unlike`, body, config);
     let updateReview = review;
     updateReview.likes--;
     updateReview.isLiked = false;
