@@ -69,7 +69,6 @@ const HousePage = ({
             </Col>
           )}
         </Row>
-        <br />
         <Row>
           {!houses.loading && houses.house && (
             <Accordion as={Col}>
@@ -104,7 +103,7 @@ const HousePage = ({
                     variant='secondary'
                     as={Button}
                     eventKey='0'
-                    className='px-0'
+                    className='px-0 font-weight-bold'
                     style={{ width: "100%" }}
                   >
                     {!reviews.review ? "Leave A Review" : "Edit Review"}
@@ -114,6 +113,7 @@ const HousePage = ({
             </Accordion>
           )}
         </Row>
+        <br />
         <Row className='float-center'>
           {reviews.loading || !reviews.reviews ? (
             <Col className='text-center'>
@@ -135,6 +135,7 @@ const HousePage = ({
             ))
           )}
         </Row>
+        <br />
       </Col>
       <Col />
     </Fragment>

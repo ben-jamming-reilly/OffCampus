@@ -21,7 +21,7 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
       className='sticky-top'
       style={{ paddingTop: "0", paddingBottom: "0" }}
     >
-      <Navbar.Brand style={{ color: "#0275d8" }} className='mr-0'>
+      <Navbar.Brand style={{ color: "#0275d8" }} className='mr-0 pt-0'>
         <Link to='/'>
           <h3
             style={{ fontWeight: "bolder" }}
@@ -34,21 +34,19 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse id='responsive-navbar-nav'>
         <Nav className='float-right' style={{ marginLeft: "auto" }}>
-          {isAuthenticated && user && (
-            <Nav.Item style={{ padding: "10px" }}>
-              <Link to='/#'>
-                <h2 style={{ fontWeight: "bolder" }}>{user.user_name}</h2>
-              </Link>
-            </Nav.Item>
-          )}
           <Nav.Item style={{ padding: "10px" }}>
             <Link to='/search'>
               <i class='fas fa-search fa-2x'></i>
             </Link>
           </Nav.Item>
           <Nav.Item style={{ padding: "10px" }}>
-            <Link to='/property/add/'>
+            <Link to='/search'>
               <i class='fas fa-home fa-2x'></i>
+            </Link>
+          </Nav.Item>
+          <Nav.Item style={{ padding: "10px" }}>
+            <Link to='/property/add/'>
+              <i class='far fa-plus-square fa-2x'></i>
             </Link>
           </Nav.Item>
           {!isAuthenticated && (
@@ -65,26 +63,14 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
 
           {isAuthenticated && user && (
             <Fragment>
-              <Nav.Item
-                className='my-auto align-text-top'
-                style={{ padding: "10px" }}
-              >
+              <Nav.Item className='my-auto align-text-top pt-0'>
                 <Link to='/me' className='align-text-top'>
-                  <h4
-                    style={{ fontWeight: "bolder" }}
-                    className='align-text-top mb-0 pt-1'
-                  >
+                  <h3 className='align-text-top mb-0 font-weight-bold'>
                     {user.first_name ? user.first_name : "Me"}
-                  </h4>
+                  </h3>
                 </Link>
               </Nav.Item>
-              <Nav.Item
-                style={{
-                  fontWeight: "bolder",
-                  fontSize: "1.8em",
-                  padding: "5px",
-                }}
-              >
+              <Nav.Item className='my-auto align-text-top pt-0'>
                 <Button
                   variant='link'
                   onClick={logout}

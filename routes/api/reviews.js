@@ -134,7 +134,7 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
         "FROM Review R LEFT JOIN Upvote Up USING (review_id)" +
         "WHERE zip = ? AND city = ? AND street  = ?  " +
         "GROUP BY R.review_id " +
-        "ORDER BY likes DESC, review_id DESC; ",
+        "ORDER BY likes DESC, review_id ASC; ",
       [String(zip), city, street]
     );
 
@@ -146,13 +146,10 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
         "FROM Review R JOIN Upvote Up USING (review_id) " +
         "WHERE R.zip = ? AND R.city = ? AND R.street  = ? AND Up.user_id = ? " +
         "GROUP BY R.review_id " +
-        "ORDER BY likes DESC, review_id DESC; ",
+        "ORDER BY likes DESC, review_id ASC; ",
       [String(zip), city, street, id]
     );
 
-    // Sets isLiked for each review,
-    // This is the better O(N) liked algo than one commented out
-    // below
     let likedReviewIndex = 0;
     if (likedReviews.length > 0) {
       for (let i = 0; i < rows.length; i++) {
