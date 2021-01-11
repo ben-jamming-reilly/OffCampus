@@ -31,10 +31,11 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
-export const signup = (userData) => async (dispatch) => {
+export const signup = (userData, captcha) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
+      Authorization: captcha,
     },
   };
   const body = JSON.stringify(userData);

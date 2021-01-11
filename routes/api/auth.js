@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const auth = require("../../middleware/auth");
+const captcha = require("../../middleware/captcha");
 const config = require("config");
 
 const db = require("../../utils/db");
@@ -69,7 +70,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", captcha, async (req, res) => {
   const { email, first_name, last_name, password } = req.body;
 
   try {

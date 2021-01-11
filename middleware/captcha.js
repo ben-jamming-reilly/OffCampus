@@ -22,8 +22,6 @@ module.exports = async function (req, res, next) {
       configHTTP
     );
 
-    //console.log(captchaRes.data);
-
     if (!captchaRes.data.success)
       return res.status(401).json({ msg: "CAPTCHA not verified" });
 

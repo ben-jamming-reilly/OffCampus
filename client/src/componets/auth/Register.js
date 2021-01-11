@@ -11,6 +11,9 @@ import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
+// Captcha
+import ReCAPTCHA from "react-google-recaptcha";
+
 const Register = ({ signup, setAlarm }) => {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -19,6 +22,8 @@ const Register = ({ signup, setAlarm }) => {
     password1: "",
     password2: "",
   });
+
+  const [captcha, setCaptcha] = useState(null);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,8 +43,12 @@ const Register = ({ signup, setAlarm }) => {
       email: formData.email,
       password: formData.password1,
     };
-
-    signup(userData);
+    if (captcha) {
+      console.log(captcha);
+      signup(userData, captcha);
+    } else {
+      setAlarm("Captcha is required.", "danger");
+    }
   };
 
   return (
@@ -119,6 +128,14 @@ const Register = ({ signup, setAlarm }) => {
               placeholder='Confirm Password'
               minLength='6'
               required
+            />
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <ReCAPTCHA
+              sitekey='6LfkPCEaAAAAAErMd08ve2nZ48ZSqhMMuJurQxH3'
+              onChange={(value) => setCaptcha(value)}
             />
           </Form.Group>
         </Form.Row>
