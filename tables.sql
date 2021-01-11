@@ -49,7 +49,7 @@ CREATE TABLE Review (
 
     body VARCHAR(500),
     rating DECIMAL(3,1) UNSIGNED,
-    post_date DATE,
+    post_date DATETIME,
 
     PRIMARY KEY (review_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id),

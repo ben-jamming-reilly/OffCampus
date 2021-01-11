@@ -26,7 +26,14 @@ const AddReviewForm = ({ property, user, addReviewFunc, alarmFunc }) => {
       addReviewFunc(formData, property, user);
     } else if (formData.rating > 0 && captcha) {
       // Add Review by Captcha
-      addReviewFunc(formData, property, captcha);
+      const success = addReviewFunc(formData, property, captcha);
+      if (success) {
+        setFormData({
+          body: "",
+          rating: 0,
+        });
+        setCaptcha(null);
+      }
     } else if (formData.rating === 0) {
       alarmFunc("Rating must not be zero", "danger");
     } else {

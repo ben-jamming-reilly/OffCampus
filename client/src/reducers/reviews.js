@@ -4,6 +4,7 @@ import {
   LIKE_REVIEW,
   UNLIKE_REVIEW,
   ADD_REVIEW,
+  ADD_REVIEW_CAPTCHA,
   UPDATE_REVIEW,
   LOADING_REVIEWS,
 } from "../actions/types";
@@ -28,6 +29,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         review: payload,
+      };
+    case ADD_REVIEW_CAPTCHA:
+      return {
+        ...state,
+        loading: false,
+        reviews: [payload].concat(
+          state.reviews.filter((r) => r.review_id !== payload.review_id)
+        ),
       };
     case ADD_REVIEW:
       return {

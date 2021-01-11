@@ -33,9 +33,9 @@ const Review = ({
       {review && review !== undefined && (
         <Card>
           <Card.Body>{review.body}</Card.Body>
-          <Card.Footer className='py-1'>
+          <Card.Footer className='py-0'>
             <Row>
-              <Col className='text-left align-self-center'>
+              <Col xs='7' sm='4' className='text-left align-self-center'>
                 <ReactStars
                   value={review.rating}
                   size={"30"}
@@ -43,7 +43,7 @@ const Review = ({
                   edit={false}
                 />
               </Col>
-              <Col className='text-right'>
+              <Col className='text-right pt-1'>
                 <Button
                   variant={review.isLiked ? "primary" : "outline-primary"}
                   onClick={(e) => onClick(e)}

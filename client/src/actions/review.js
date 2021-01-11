@@ -3,6 +3,7 @@ import {
   GET_REVIEWS,
   LIKE_REVIEW,
   ADD_REVIEW,
+  ADD_REVIEW_CAPTCHA,
   UNLIKE_REVIEW,
   LOADING_REVIEWS,
   GET_REVIEW,
@@ -140,12 +141,14 @@ export const addReviewAuth = (formData, property, user) => async (dispatch) => {
     });
 
     dispatch(setAlarm(res.data.msg, "success"));
+    return true;
   } catch (err) {
     if (err.response) {
       const errors = err.response.data.errors;
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }
+    return false;
   }
 };
 
@@ -171,18 +174,22 @@ export const addReviewCaptcha = (formData, property, captcha) => async (
       rating: formData.rating,
       likes: 0,
     };
-
     dispatch({
-      type: ADD_REVIEW,
+      type: LOADING_REVIEWS,
+    });
+    dispatch({
+      type: ADD_REVIEW_CAPTCHA,
       payload: review,
     });
 
     dispatch(setAlarm(res.data.msg, "success"));
+    return true;
   } catch (err) {
     if (err.response) {
       const errors = err.response.data.errors;
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }
+    return false;
   }
 };

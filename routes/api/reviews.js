@@ -108,7 +108,7 @@ router.get("/:zip/:city/:street", async (req, res) => {
         "FROM Review LEFT JOIN Upvote Up USING (review_id) " +
         "WHERE zip = ? AND city = ? AND street  = ? " +
         "GROUP BY review_id " +
-        "ORDER BY likes DESC; ",
+        "ORDER BY likes DESC, review_id DESC; ",
       [String(zip), city, street]
     );
 
@@ -134,7 +134,7 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
         "FROM Review LEFT JOIN Upvote Up USING (review_id)" +
         "WHERE zip = ? AND city = ? AND street  = ?  " +
         "GROUP BY R.user_id " +
-        "ORDER BY likes DESC; ",
+        "ORDER BY likes DESC, review_id DESC; ",
       [String(zip), city, street]
     );
 
@@ -143,11 +143,28 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
         "FROM Review R JOIN Upvote Up USING (review_id) " +
         "WHERE R.zip = ? AND R.city = ? AND R.street  = ? AND Up.user_id = ? " +
         "GROUP BY R.user_id " +
-        "ORDER BY likes DESC; ",
+        "ORDER BY likes DESC, review_id DESC; ",
       [String(zip), city, street, id]
     );
 
+    // Sets isLiked for each review,
+    // This is the better O(N) liked algo than one commented out
+    // below
+    let likedReviewIndex = 0;
+    for (let i = 0; i < rows.length; i++) {
+      rows[i].isLiked = false;
+
+      if (rows[i].review_id === likedReviews[likedReviewIndex]) {
+        likedReviewIndex++;
+        rows[i].isLiked = true;
+
+        if (likedReviewIndex >= likedReviews.length) break;
+      }
+    }
+
     // Sets isLiked for each review
+    // Infurior O(N^2) algo
+    /*
     for (let i = 0; i < likedReviews.length; i++) {
       for (let j = 0; j < rows.length; j++) {
         if (likedReviews[i].review_id === rows[j].review_id) {
@@ -156,6 +173,7 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
         }
       }
     }
+    */
 
     return res.status(200).json(rows);
   } catch (err) {
