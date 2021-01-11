@@ -8,6 +8,7 @@ import { logout } from "../../actions/auth";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import { Fragment } from "react";
 
 const NavigationBar = ({ logout, isAuthenticated, user }) => {
   return (
@@ -61,39 +62,40 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
               <Link to='/auth'>Login</Link>
             </Nav.Item>
           )}
-        </Nav>
-        {isAuthenticated && user && (
-          <Nav>
-            <Nav.Item
-              className='my-auto align-text-top'
-              style={{ padding: "10px" }}
-            >
-              <Link to='/me' className='align-text-top'>
-                <h4
-                  style={{ fontWeight: "bolder" }}
-                  className='align-text-top mb-0 pt-1'
-                >
-                  {user.first_name ? user.first_name : "Me"}
-                </h4>
-              </Link>
-            </Nav.Item>
-            <Nav.Item
-              style={{
-                fontWeight: "bolder",
-                fontSize: "1.8em",
-                padding: "5px",
-              }}
-            >
-              <Button
-                variant='link'
-                onClick={logout}
-                className='font-weight-bold'
+
+          {isAuthenticated && user && (
+            <Fragment>
+              <Nav.Item
+                className='my-auto align-text-top'
+                style={{ padding: "10px" }}
               >
-                <i class='fas fa-sign-out-alt fa-2x'></i>
-              </Button>
-            </Nav.Item>
-          </Nav>
-        )}
+                <Link to='/me' className='align-text-top'>
+                  <h4
+                    style={{ fontWeight: "bolder" }}
+                    className='align-text-top mb-0 pt-1'
+                  >
+                    {user.first_name ? user.first_name : "Me"}
+                  </h4>
+                </Link>
+              </Nav.Item>
+              <Nav.Item
+                style={{
+                  fontWeight: "bolder",
+                  fontSize: "1.8em",
+                  padding: "5px",
+                }}
+              >
+                <Button
+                  variant='link'
+                  onClick={logout}
+                  className='font-weight-bold'
+                >
+                  <i class='fas fa-sign-out-alt fa-2x'></i>
+                </Button>
+              </Nav.Item>
+            </Fragment>
+          )}
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
