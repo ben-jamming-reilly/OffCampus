@@ -131,18 +131,21 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
       fields,
     ] = await db.query(
       "SELECT review_id, body, rating, post_date, COUNT(Up.user_id) as likes " +
-        "FROM Review LEFT JOIN Upvote Up USING (review_id)" +
+        "FROM Review R LEFT JOIN Upvote Up USING (review_id)" +
         "WHERE zip = ? AND city = ? AND street  = ?  " +
-        "GROUP BY R.user_id " +
+        "GROUP BY R.review_id " +
         "ORDER BY likes DESC, review_id DESC; ",
       [String(zip), city, street]
     );
 
-    let [likedReviews, fields2] = await db.query(
-      "SELECT R.review_id " +
+    let [
+      likedReviews,
+      fields2,
+    ] = await db.query(
+      "SELECT R.review_id, COUNT(Up.user_id) as likes " +
         "FROM Review R JOIN Upvote Up USING (review_id) " +
         "WHERE R.zip = ? AND R.city = ? AND R.street  = ? AND Up.user_id = ? " +
-        "GROUP BY R.user_id " +
+        "GROUP BY R.review_id " +
         "ORDER BY likes DESC, review_id DESC; ",
       [String(zip), city, street, id]
     );
@@ -151,29 +154,18 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
     // This is the better O(N) liked algo than one commented out
     // below
     let likedReviewIndex = 0;
-    for (let i = 0; i < rows.length; i++) {
-      rows[i].isLiked = false;
+    if (likedReviews.length > 0) {
+      for (let i = 0; i < rows.length; i++) {
+        rows[i].isLiked = false;
 
-      if (rows[i].review_id === likedReviews[likedReviewIndex]) {
-        likedReviewIndex++;
-        rows[i].isLiked = true;
+        if (rows[i].review_id === likedReviews[likedReviewIndex].review_id) {
+          likedReviewIndex++;
+          rows[i].isLiked = true;
 
-        if (likedReviewIndex >= likedReviews.length) break;
-      }
-    }
-
-    // Sets isLiked for each review
-    // Infurior O(N^2) algo
-    /*
-    for (let i = 0; i < likedReviews.length; i++) {
-      for (let j = 0; j < rows.length; j++) {
-        if (likedReviews[i].review_id === rows[j].review_id) {
-          rows[j].isLiked = true;
-          break;
+          if (likedReviewIndex >= likedReviews.length) break;
         }
       }
     }
-    */
 
     return res.status(200).json(rows);
   } catch (err) {

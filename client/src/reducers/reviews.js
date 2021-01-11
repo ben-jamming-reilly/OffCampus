@@ -57,7 +57,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         reviews: state.reviews.map((r) =>
-          payload.user_id === r.user_id ? payload : r
+          payload.review_id === r.review_id ? payload : r
         ),
 
         loading: false,
