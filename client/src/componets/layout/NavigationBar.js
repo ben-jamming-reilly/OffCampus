@@ -45,7 +45,7 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
               <i class='fas fa-home fa-2x'></i>
             </Link>
           </Nav.Item>
-          {!isAuthenticated ? (
+          {!isAuthenticated && (
             <Nav.Item
               style={{
                 fontWeight: "bolder",
@@ -55,7 +55,20 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
             >
               <Link to='/auth'>Login</Link>
             </Nav.Item>
-          ) : (
+          )}
+        </Nav>
+        {isAuthenticated && user && (
+          <Nav>
+            <Nav.Item className='my-auto align-text-top'>
+              <Link to='/me' className='align-text-top'>
+                <h4
+                  style={{ fontWeight: "bolder" }}
+                  className='align-text-top mb-0 pt-1'
+                >
+                  {user.first_name ? user.first_name : "Me"}
+                </h4>
+              </Link>
+            </Nav.Item>
             <Nav.Item
               style={{
                 fontWeight: "bolder",
@@ -71,8 +84,8 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
                 <i class='fas fa-sign-out-alt fa-2x'></i>
               </Button>
             </Nav.Item>
-          )}
-        </Nav>
+          </Nav>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
