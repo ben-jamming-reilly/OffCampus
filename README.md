@@ -24,7 +24,7 @@ A simple web app to for college students to find cheap affordable off-campus hou
   }
   ```
 
-  ## About Current DB
+  ### About Current DB
 
   - Only for development are we running a mysql server locally, officially off of gonzaga :). I have a file which contains all of the Data from the cps-database. If others join I will add them later.
   - I am sticking with MySQL for now, although I hope to change that. Plans are to deploy initially with MySQL or MariaDB, the first MVP, then finally switching the code base to Postgres afterwards.
