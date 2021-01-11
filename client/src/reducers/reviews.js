@@ -33,8 +33,8 @@ export default function (state = initialState, action) {
       return {
         ...state,
         review: payload,
-        reviews: state.reviews.map((r) =>
-          r.user_id === payload.user_id ? payload : r
+        reviews: [payload].concat(
+          state.reviews.filter((r) => r.review_id !== payload.review_id)
         ),
       };
     case UPDATE_REVIEW:

@@ -15,7 +15,8 @@ import { getHouse } from "../../actions/search";
 import { setAlarm } from "../../actions/alarm";
 import {
   getReviews,
-  addReview,
+  addReviewAuth,
+  addReviewCaptcha,
   likeReview,
   unlikeReview,
 } from "../../actions/review";
@@ -29,7 +30,8 @@ import EditReviewForm from "../review/EditReviewForm";
 const HousePage = ({
   getHouse,
   getReviews,
-  addReview,
+  addReviewAuth,
+  addReviewCaptcha,
   likeReview,
   unlikeReview,
   setAlarm,
@@ -74,17 +76,23 @@ const HousePage = ({
               <Card>
                 <Accordion.Collapse eventKey='0'>
                   <Card.Body>
-                    {!reviews.review ? (
+                    {!reviews.review && user ? (
                       <AddReviewForm
                         property={houses.house}
-                        addReviewFunc={addReview}
+                        addReviewFunc={addReviewAuth}
                         user={user}
+                        alarmFunc={setAlarm}
+                      />
+                    ) : !reviews.review && !user ? (
+                      <AddReviewForm
+                        property={houses.house}
+                        addReviewFunc={addReviewCaptcha}
                         alarmFunc={setAlarm}
                       />
                     ) : (
                       <EditReviewForm
                         property={houses.house}
-                        editReviewFunc={addReview}
+                        editReviewFunc={addReviewAuth}
                         review={reviews.review}
                         user={user}
                       />
@@ -113,24 +121,18 @@ const HousePage = ({
               <Spinner animation='border' />
             </Col>
           ) : (
-            reviews.reviews.map((r) =>
-              !r ? (
-                ""
-              ) : (
-                <Col xs='12' className='pt-1'>
-                  {
-                    <Review
-                      data={r}
-                      property={houses.house}
-                      user={user}
-                      likeFunc={likeReview}
-                      unlikeFunc={unlikeReview}
-                      alarmFunc={setAlarm}
-                    />
-                  }
-                </Col>
-              )
-            )
+            reviews.reviews.map((r) => (
+              <Col xs='12' className='pt-1'>
+                <Review
+                  review={r}
+                  property={houses.house}
+                  user={user}
+                  likeFunc={likeReview}
+                  unlikeFunc={unlikeReview}
+                  alarmFunc={setAlarm}
+                />
+              </Col>
+            ))
           )}
         </Row>
       </Col>
@@ -160,7 +162,8 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getHouse,
   getReviews,
-  addReview,
+  addReviewAuth,
+  addReviewCaptcha,
   likeReview,
   unlikeReview,
   setAlarm,

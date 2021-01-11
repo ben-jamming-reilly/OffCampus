@@ -8,13 +8,20 @@ import Col from "react-bootstrap/Col";
 
 import ReactStars from "react-stars";
 
-const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
+const Review = ({
+  review,
+  property,
+  user,
+  likeFunc,
+  unlikeFunc,
+  alarmFunc,
+}) => {
   const onClick = (e) => {
     if (user) {
-      if (data.isLiked) {
-        unlikeFunc(data, property);
+      if (review.isLiked) {
+        unlikeFunc(review, property);
       } else {
-        likeFunc(data, property);
+        likeFunc(review, property);
       }
     } else {
       alarmFunc("You must login to like a review", "danger");
@@ -23,17 +30,14 @@ const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
 
   return (
     <Fragment>
-      {data && data !== undefined && (
+      {review && review !== undefined && (
         <Card>
-          <Card.Body>{data.body}</Card.Body>
+          <Card.Body>{review.body}</Card.Body>
           <Card.Footer className='py-1'>
             <Row>
               <Col className='text-left align-self-center'>
-                {data.user_name}
-              </Col>
-              <Col className='text-left align-self-center'>
                 <ReactStars
-                  value={data.rating}
+                  value={review.rating}
                   size={"30"}
                   half={true}
                   edit={false}
@@ -41,10 +45,10 @@ const Review = ({ data, property, user, likeFunc, unlikeFunc, alarmFunc }) => {
               </Col>
               <Col className='text-right'>
                 <Button
-                  variant={data.isLiked ? "primary" : "outline-primary"}
+                  variant={review.isLiked ? "primary" : "outline-primary"}
                   onClick={(e) => onClick(e)}
                 >
-                  <i class='far fa-thumbs-up'></i> {data.likes}
+                  <i class='far fa-thumbs-up'></i> {review.likes}
                 </Button>
               </Col>
             </Row>

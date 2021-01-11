@@ -113,11 +113,10 @@ export const unlikeReview = (review, property) => async (dispatch) => {
   }
 };
 
-export const addReview = (formData, user, property) => async (dispatch) => {
+export const addReviewAuth = (formData, property, user) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
-      "x-captcha": formData.captcha,
     },
   };
 
@@ -130,9 +129,45 @@ export const addReview = (formData, user, property) => async (dispatch) => {
     );
 
     const review = {
-      user_name: user.user_name,
-      user_id: user.id,
-      review: formData.review,
+      body: formData.body,
+      rating: formData.rating,
+      likes: 0,
+    };
+
+    dispatch({
+      type: ADD_REVIEW,
+      payload: review,
+    });
+
+    dispatch(setAlarm(res.data.msg, "success"));
+  } catch (err) {
+    if (err.response) {
+      const errors = err.response.data.errors;
+      console.error(errors);
+      errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
+    }
+  }
+};
+
+export const addReviewCaptcha = (formData, property, captcha) => async (
+  dispatch
+) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: captcha,
+    },
+  };
+  const body = JSON.stringify({ formData });
+  try {
+    const res = await axios.post(
+      `/api/reviews/captcha/${property.zip}/${property.city}/${property.street}`,
+      body,
+      config
+    );
+
+    const review = {
+      body: formData.body,
       rating: formData.rating,
       likes: 0,
     };

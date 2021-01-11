@@ -46,13 +46,13 @@ router.post("/:zip/:city/:street", auth, async (req, res) => {
 // Add a review by captcha
 router.post("/captcha/:zip/:city/:street", captcha, async (req, res) => {
   const { zip, city, street } = req.params;
-  const { body, rating } = req.body;
+  const { formData } = req.body;
 
   try {
     await db.query(
       "INSERT INTO Review (street, city, zip, body, rating, post_date) " +
         "VALUES ( ?, ?, ?, ?, ?, NOW()); ",
-      [street, city, zip, body, rating]
+      [street, city, zip, formData.body, formData.rating]
     );
 
     return res.status(201).json({ msg: "Review Added!" });

@@ -8,7 +8,7 @@ import ReactStars from "react-stars";
 
 const EditReviewForm = ({ property, review, editReviewFunc, user }) => {
   const [formData, setFormData] = useState({
-    review: review.review,
+    body: review.body,
     rating: review.rating,
   });
 
@@ -20,7 +20,7 @@ const EditReviewForm = ({ property, review, editReviewFunc, user }) => {
 
     if (formData.rating > 0) {
       console.log(formData);
-      editReviewFunc(formData, user, property);
+      editReviewFunc(formData, property, user);
     } else {
       console.log("Please add a rating as well.");
     }
@@ -33,8 +33,8 @@ const EditReviewForm = ({ property, review, editReviewFunc, user }) => {
           <Form.Label>Review</Form.Label>
           <Form.Control
             as='textarea'
-            name='review'
-            value={formData.review}
+            name='body'
+            value={formData.body}
             required
             onChange={(e) => onChange(e)}
           />
@@ -47,7 +47,7 @@ const EditReviewForm = ({ property, review, editReviewFunc, user }) => {
             value={formData.rating}
             onChange={(e) => setFormData({ ...formData, rating: e })}
             size={"30"}
-            half={false}
+            half={true}
           />
         </Col>
         <Col xs='4' className='py-1 float-right'>
