@@ -10,23 +10,36 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
 const Alarm = ({ alarms, removeAlarm }) => {
+  console.log(alarms);
   return (
     <Fragment>
-      <Container className='px-5'>
-        {alarms === undefined || alarms.length < 1
-          ? ""
-          : alarms.map((alarm) => (
-              <Alert
-                variant={alarm.type}
-                key={alarm.id}
-                onClose={() => removeAlarm(alarm.id)}
-                show={true}
-                dismissible
-              >
-                <p>{alarm.msg}</p>
-              </Alert>
-            ))}
-      </Container>
+      {alarms === undefined || alarms.length < 1 ? (
+        ""
+      ) : (
+        <Row className='fixed-top'>
+          <Col xs='12'>
+            <br />
+            <br />
+          </Col>
+          {alarms.map((alarm) => (
+            <Fragment>
+              <Col xs='1' sm='2' md='3' lg='3' />
+              <Col xs='10' sm='8' md='6' lg='6'>
+                <Alert
+                  variant={alarm.type}
+                  key={alarm.id}
+                  onClose={() => removeAlarm(alarm.id)}
+                  show={true}
+                  dismissible
+                >
+                  <p>{alarm.msg}</p>
+                </Alert>
+              </Col>
+              <Col xs='1' sm='2' md='3' lg='3' />
+            </Fragment>
+          ))}
+        </Row>
+      )}
     </Fragment>
   );
 };

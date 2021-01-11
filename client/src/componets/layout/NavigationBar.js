@@ -17,6 +17,7 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
       bg='dark'
       variant='dark'
       sticky='top'
+      className='sticky-top'
       style={{ paddingTop: "0", paddingBottom: "0" }}
     >
       <Navbar.Brand style={{ color: "#0275d8" }} className='mr-0'>
