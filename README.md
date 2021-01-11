@@ -2,10 +2,26 @@
 
 A simple web app to for college students to find cheap affordable off-campus housing. OffCampus is inspired by RateMyProfessor in the sense of commuity review. Post houses you've lived in and look at other peoples experiences at that house. Lastly, get connected with a landlord.
 
+## Features
+
+- Find Reviews of a Property
+  - Search by address
+  - Add a review with authenticated account
+  - Add a review with ReCAPTCHA
+  - Like reviews with authenticated account
+- Search for Properties
+  - Select properties by certain search criteria
+  - Save properties for later viewing
+  - Look at landlords for their associated property, get contacted
+- Add an unlisted Property
+  - Submit property with authenticated account
+  - Submit property with ReCAPTCHA
+  - This will require a picture of the house
+
 ## To Configure
 
 - Make sure you have the latest LTS version of node.js
-- Pull to get the files
+- Git clone or pull to get server files
 - Install all the dependencies, by typing this into a bash terminal under the RateMyLandLord dir
 
   ```s
@@ -16,6 +32,7 @@ A simple web app to for college students to find cheap affordable off-campus hou
 
   ```json
   {
+    "captcha_secret_key": "[CAPTCHA_SECRET]",
     "db_host": "[DB_IP_ADDRESS]",
     "db_user": "[DB_USER_NAME]",
     "db_password": "[DB_PASSWORD]",
