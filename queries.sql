@@ -84,3 +84,10 @@ WHERE R.zip = '99207'
     AND Up.user_id = ''
 GROUP BY R.review_id
 ORDER BY likes DESC; 
+
+
+ALTER TABLE Property
+ADD COLUMN landlord_id CHAR(36) AFTER zip;
+
+ALTER TABLE Property
+ADD FOREIGN KEY (landlord_id) REFERENCES Landlord(landlord_id);
