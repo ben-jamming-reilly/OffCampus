@@ -42,7 +42,7 @@ const App = () => {
             <Container fluid='sm' className='mx-auto px-0'>
               <Switch>
                 <Route exact path='/' component={Landing} />
-                <Route exact path='/auth' component={Auth} />
+                <Route exact path='/auth/:type' component={Auth} />
                 <Route exact path='/search' component={Search} />
                 <Route
                   exact

@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
+import { Redirect, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Redirect } from "react-router-dom";
 
 import Login from "./Login";
 import Register from "./Register";
@@ -13,7 +13,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const Auth = ({ isAuthenticated }) => {
-  const [isLogin, setAuthType] = useState(true);
+  const { type } = useParams();
+
+  const [isLogin, setAuthType] = useState(type === "signup" ? false : true);
 
   if (isAuthenticated) {
     return <Redirect to='/' />;

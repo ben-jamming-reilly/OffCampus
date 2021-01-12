@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from "react";
+import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -8,30 +9,36 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import Badge from "react-bootstrap/Badge";
-import Spinner from "react-bootstrap/Spinner";
+import Image from "react-bootstrap/Image";
 
-import AddDefaultProperty from "./AddDefaultProperty";
-import AddParcelProperty from "./AddParcelProperty";
+import { newProperty } from "../../actions/property";
 
-import { newProperty, getParcelProperty } from "../../actions/property";
-
-const AddProperty = ({
-  getParcelProperty,
-  newProperty,
-  houses: { houses, house, loading },
-}) => {
+const AddProperty = ({ newProperty }) => {
+  const [previewFile, setPreviewFile] = useState(null);
   const [formData, setFormData] = useState({
     street: "",
     city: "Spokane",
     zip: "",
     state: "WA",
+    type: "",
+    next_lease_date: "",
+    beds: "",
+    baths: "",
+    area: "",
+    rent: "",
   });
 
-  const [isSearching, setIsSearching] = useState(false);
+  const history = useHistory();
+
+  const fileOnChange = (e) => {
+    setPreviewFile(URL.createObjectURL(e.target.files[0]));
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setIsSearching(true);
+
+    let file = document.getElementById("image").files;
+    if (!file) return;
 
     // Confirm with regex this is an address
     if (/\w+(\s\w+){2,}/.exec(formData.street)) {
@@ -46,7 +53,8 @@ const AddProperty = ({
         }
       });
 
-      await getParcelProperty({ ...formData, street: std_street });
+      setFormData({ ...formData, street: std_street });
+      newProperty(formData, file, history);
     } else {
       console.error("REGEX ERROR");
     }
@@ -185,6 +193,108 @@ const AddProperty = ({
               </Form.Group>
               <Col />
             </Form.Row>
+            <Form.Row>
+              <br />
+            </Form.Row>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='basic-addon1'>
+                      <i class='fas fa-dollar-sign'></i>
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    name='rent'
+                    value={formData.rent !== 0 ? formData.rent : "Rent"}
+                    onChange={(e) => onChange(e)}
+                    placeholder='Rent'
+                    type='number'
+                    min={0}
+                    max={99999}
+                    step={1}
+                  />
+                </InputGroup>
+              </Form.Group>
+              <Form.Group as={Col}>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text id='basic-addon1'>Type</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control type='select' as='select'>
+                    <option value='house'>House</option>
+                    <option value='apartment'>Apartment</option>
+                  </Form.Control>
+                </InputGroup>
+              </Form.Group>
+            </Form.Row>
+            <Form.Row>
+              <Col>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>
+                          <i class='fas fa-bath '></i>
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        name='baths'
+                        value={formData.baths}
+                        onChange={(e) => onChange(e)}
+                        placeholder='Bathrooms'
+                        type='number'
+                        min={0}
+                        max={99999}
+                        step={1}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>
+                          <i class='fas fa-bed'></i>
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        name='beds'
+                        value={formData.beds}
+                        onChange={(e) => onChange(e)}
+                        placeholder='Bedrooms'
+                        type='number'
+                        min={0}
+                        max={99999}
+                        step={1}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Col className='align-text-bottom my-auto pt-2' xs='2'>
+                    <i class='fas fa-image fa-2x'></i>
+                  </Col>
+                  <Form.Group as={Col}>
+                    <Form.File id='image' onChange={fileOnChange} label='' />
+                  </Form.Group>
+                </Form.Row>
+              </Col>
+              <Col className='text-center my-auto '>
+                {previewFile && (
+                  <Image
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "15rem",
+                      maxHeight: "15rem",
+                    }}
+                    rounded
+                    src={previewFile}
+                  />
+                )}
+              </Col>
+            </Form.Row>
             <Form.Row className='pt-1'>
               <Col>
                 <Button type='submit' block>
@@ -193,20 +303,6 @@ const AddProperty = ({
               </Col>
             </Form.Row>
           </Form>
-        </Row>
-        <br />
-        <Row className='float-center mx-auto '>
-          <Col className='text-center py-0 mx-0 px-0'>
-            {!isSearching ? (
-              ""
-            ) : loading ? (
-              <Spinner animation='border' />
-            ) : house ? (
-              <AddParcelProperty property={house} />
-            ) : (
-              <AddDefaultProperty />
-            )}
-          </Col>
         </Row>
       </Col>
       <Col />
@@ -218,10 +314,6 @@ AddProperty.propTypes = {
   newProperty: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  houses: state.houses,
-});
+const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, { newProperty, getParcelProperty })(
-  AddProperty
-);
+export default connect(mapStateToProps, { newProperty })(AddProperty);

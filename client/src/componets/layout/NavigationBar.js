@@ -57,7 +57,7 @@ const NavigationBar = ({ logout, isAuthenticated, user }) => {
                 padding: "5px",
               }}
             >
-              <Link to='/auth'>Login</Link>
+              <Link to='/auth/login'>Login</Link>
             </Nav.Item>
           )}
 
