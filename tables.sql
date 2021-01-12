@@ -38,7 +38,7 @@ CREATE TABLE Property (
     verified BOOLEAN,
 
     PRIMARY KEY (street, city, zip),
-    FOREIGN Key (landlord_id) REFERENCES Property (landlord_id),
+    FOREIGN Key (landlord_id) REFERENCES Landlord (landlord_id)
 );
 
 CREATE TABLE Review (

@@ -245,7 +245,7 @@ const AddProperty = ({ newProperty }) => {
                         placeholder='Bathrooms'
                         type='number'
                         min={0}
-                        max={99999}
+                        max={99}
                         step={1}
                       />
                     </InputGroup>
@@ -266,7 +266,7 @@ const AddProperty = ({ newProperty }) => {
                         placeholder='Bedrooms'
                         type='number'
                         min={0}
-                        max={99999}
+                        max={99}
                         step={1}
                       />
                     </InputGroup>
@@ -298,7 +298,7 @@ const AddProperty = ({ newProperty }) => {
             <Form.Row className='pt-1'>
               <Col>
                 <Button type='submit' block>
-                  Search for Property
+                  Add Property
                 </Button>
               </Col>
             </Form.Row>
