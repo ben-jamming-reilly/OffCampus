@@ -22,6 +22,8 @@ CREATE TABLE Property (
     city VARCHAR(64),
     zip VARCHAR(6),
 
+    landlord_id CHAR(36),
+
     state CHAR(2) NOT NULL,
     type VARCHAR(30),
     next_lease_date DATE,
@@ -35,7 +37,8 @@ CREATE TABLE Property (
     pic_link VARCHAR(100),
     verified BOOLEAN,
 
-    PRIMARY KEY (street, city, zip)
+    PRIMARY KEY (street, city, zip),
+    FOREIGN Key (landlord_id) REFERENCES Property (landlord_id),
 );
 
 CREATE TABLE Review (
@@ -62,6 +65,25 @@ CREATE TABLE Upvote (
 
     PRIMARY KEY (review_id, user_id),
     FOREIGN KEY (review_id) REFERENCES Review (review_id),
+    FOREIGN KEY (user_id) REFERENCES User (user_id)
+);
+
+CREATE TABLE Landlord (
+    landlord_id CHAR(36),
+
+    user_id CHAR(36),
+
+    company_name VARCHAR(255),
+    phone CHAR(12),
+    email VARCHAR(80),
+
+    street VARCHAR(64),
+    city VARCHAR(64),
+    zip VARCHAR(6),
+
+    file_name VARCHAR(255),
+
+    PRIMARY KEY (landlord_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id)
 );
 
