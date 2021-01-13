@@ -22,7 +22,7 @@ A simple web app to for college students to find cheap affordable off-campus hou
 
 - Make sure you have the latest LTS version of node.js
 - Git clone or pull to get server files
-- Install all the dependencies, by typing this into a bash terminal under the RateMyLandLord dir
+- Install all the dependencies, by typing this into a bash terminal under the OffCampus dir
 
   ```s
   $ npm install
