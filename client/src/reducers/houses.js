@@ -22,9 +22,9 @@ function houseReducer(state = initialState, action) {
     case GET_HOUSES:
       return {
         ...state,
-        houses: payload,
+        houses: payload.properties,
         loading: false,
-        endOfQuery: false,
+        endOfQuery: payload.endOfQuery,
         page: 1,
       };
     case GET_MORE_HOUSES:

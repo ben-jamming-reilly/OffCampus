@@ -16,10 +16,12 @@ export const searchHouses = (formData = null, page = 0) => async (dispatch) => {
         `${formData.zip}/${formData.city}/${formData.street}/${page}`
     );
 
+    console.log(res.data);
+
     if (page === 0) {
       dispatch({
         type: GET_HOUSES,
-        payload: res.data.properties,
+        payload: res.data,
       });
     } else {
       dispatch({
