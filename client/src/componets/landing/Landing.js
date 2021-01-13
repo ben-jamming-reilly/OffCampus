@@ -101,7 +101,10 @@ const Landing = ({ auth: { user, loading } }) => {
                 bg='light'
               >
                 <Card.Body>
-                  <Link to='/' className='stretched-link text-warning'>
+                  <Link
+                    to='/property/add'
+                    className='stretched-link text-warning'
+                  >
                     <h3 className='font-weight-bold '>
                       <small>
                         <i class='fas fa-plus'></i>

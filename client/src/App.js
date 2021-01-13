@@ -20,6 +20,7 @@ import HousePage from "./componets/house/HousePage";
 import Landing from "./componets/landing/Landing";
 import AddProperty from "./componets/house/AddProperty";
 import Credits from "./componets/misc/Credits";
+import PageNotFound from "./componets/misc/PageNotFound";
 
 import "./App.css";
 
@@ -51,7 +52,8 @@ const App = () => {
                   component={HousePage}
                 />
                 <Route exact path='/property/add' component={AddProperty} />
-                <AuthRoute exact path='/credits' component={Credits} />
+                <Route exact path='/credits' component={Credits} />
+                <Route component={PageNotFound} />
               </Switch>
             </Container>
           </section>
