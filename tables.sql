@@ -14,6 +14,9 @@ CREATE TABLE User (
     email VARCHAR(80) NOT NULL UNIQUE,
     password CHAR(60) NOT NULL,
 
+    join_date DATETIME,
+    last_login_date DATETIME,
+
     PRIMARY KEY (user_id)
 );
 
@@ -85,6 +88,18 @@ CREATE TABLE Landlord (
 
     PRIMARY KEY (landlord_id),
     FOREIGN KEY (user_id) REFERENCES User (user_id)
+);
+
+CREATE TABLE SavedProperty (
+    user_id CHAR(36),
+
+    street VARCHAR(64),
+    city VARCHAR(64),
+    zip VARCHAR(6),
+
+    PRIMARY KEY (user_id, street, city, zip),
+    FOREIGN KEY (user_id) REFERENCES User (user_id),
+    FOREIGN Key (street, city, zip) REFERENCES Property (street, city, zip)
 );
 
 /* City of Spokane Tax Info */

@@ -91,3 +91,17 @@ ADD COLUMN landlord_id CHAR(36) AFTER zip;
 
 ALTER TABLE Property
 ADD FOREIGN KEY (landlord_id) REFERENCES Landlord(landlord_id);
+
+ALTER TABLE User
+ADD COLUMN join_date DATETIME DEFAULT NOW() AFTER password;
+
+ALTER TABLE User
+ADD COLUMN last_login_date DATETIME DEFAULT NOW() AFTER join_date;
+
+ALTER TABLE User
+DROP COLUMN last_login_date;
+
+
+UPDATE User
+SET last_login_date = NOW() 
+WHERE user_id = ?
