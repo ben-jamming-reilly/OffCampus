@@ -9,7 +9,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 const Alarm = ({ alarms, removeAlarm }) => {
-  console.log(alarms);
   return (
     <Fragment>
       {alarms === undefined || alarms.length < 1 ? (

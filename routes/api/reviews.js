@@ -124,8 +124,6 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
   const { zip, city, street, id } = req.params;
 
   try {
-    // This is overall quite slow, i feel that this could be done in a n log (n) way
-    // possibly by doing a sort. Its fine for now...
     let [
       rows,
       fields,
@@ -150,6 +148,8 @@ router.get("/:zip/:city/:street/:id", async (req, res) => {
       [String(zip), city, street, id]
     );
 
+    // The Preferable O(N) was of doing this. Have DBMS do the sorting so all it takes
+    // is one singular pass of the algo
     let likedReviewIndex = 0;
     if (likedReviews.length > 0) {
       for (let i = 0; i < rows.length; i++) {

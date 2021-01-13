@@ -11,6 +11,7 @@ import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 import NavigationBar from "./componets/layout/NavigationBar";
 import Alarm from "./componets/layout/Alarm";
+import AuthRoute from "./componets/routing/AuthRoute";
 
 // Pages
 import Auth from "./componets/auth/Auth";
@@ -50,7 +51,7 @@ const App = () => {
                   component={HousePage}
                 />
                 <Route exact path='/property/add' component={AddProperty} />
-                <Route exact path='/credits' component={Credits} />
+                <AuthRoute exact path='/credits' component={Credits} />
               </Switch>
             </Container>
           </section>

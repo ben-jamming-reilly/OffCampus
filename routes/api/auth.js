@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT user_id as id, email, first_name, last_name FROM User WHERE user_id = ?; ",
+      "SELECT user_id as id, email, first_name, last_name, last_login_date FROM User WHERE user_id = ?; ",
       [id]
     );
 
@@ -49,6 +49,13 @@ router.post("/login", async (req, res) => {
     if (!isMatch)
       return res.status(400).json({ errors: [{ msg: "Invalid Password" }] });
 
+    // The login is a success, update last_login_date to now
+    await db.query(
+      "UPDATE User SET last_login_date = NOW() WHERE user_id = ?; ",
+      [rows[0].user_id]
+    );
+
+    // Send the user an auth token.
     const payload = {
       user: {
         id: rows[0].user_id,

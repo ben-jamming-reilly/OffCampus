@@ -246,16 +246,17 @@ router.get("/search/:zip/:city/:street/:page", async (req, res) => {
   try {
     let endOfQuery = false;
 
-    const [rows, fields] = await db.query(
+    let [rows, fields] = await db.query(
       "SELECT * " +
         "FROM Property " +
         "WHERE SOUNDEX(street) LIKE CONCAT('%', SUBSTRING(SOUNDEX(?), 2), '%') AND city = ? AND zip = ? " +
         "ORDER BY ABS(CAST(SUBSTRING(street, 1, 4) AS SIGNED) - CAST(SUBSTRING( ?, 1, 4) AS SIGNED))" +
         "LIMIT ?, ?; ",
-      [street, city, zip, street, page_offset, page_requests]
+      [street, city, zip, street, page_offset, page_requests + 1]
     );
 
-    if (rows.length < page_requests) endOfQuery = true;
+    if (rows.length < page_requests + 1) endOfQuery = true;
+    else rows.pop();
 
     return res.status(200).json({ properties: rows, endOfQuery: endOfQuery });
   } catch (err) {

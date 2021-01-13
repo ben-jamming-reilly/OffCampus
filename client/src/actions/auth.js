@@ -24,6 +24,9 @@ export const loadUser = () => async (dispatch) => {
   } catch (err) {
     const errors = err.response.data.errors;
 
+    dispatch({
+      type: LOGIN_FAIL,
+    });
     if (errors) {
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
@@ -71,7 +74,6 @@ export const login = (userData) => async (dispatch) => {
   };
 
   const body = JSON.stringify(userData);
-  console.log(userData);
   try {
     const res = await axios.post("/api/auth/login", body, config);
 
