@@ -11,7 +11,6 @@ import Container from "react-bootstrap/Container";
 const Landing = ({ auth: { user, loading } }) => {
   return (
     <Container>
-      <br />
       {!loading && (
         <Row className='justify-content-center mx-0'>
           <Row className='justify-content-center'>
@@ -19,24 +18,34 @@ const Landing = ({ auth: { user, loading } }) => {
               <Card
                 className='m-3 py-4'
                 style={{ width: "20rem", height: "15rem" }}
-                border='secondary'
+                border='primary'
                 bg='light'
               >
                 <Card.Body className=''>
                   {!user ? (
                     <Fragment>
                       <Link to='/auth/signup' className='stretched-link'>
-                        <h3 className='font-weight-bold'>Signup</h3>
+                        <h3 className='font-weight-bold'>
+                          <i class='fas fa-key'></i> Signup
+                        </h3>
                       </Link>
                       <p className='font-weight-bold'>
                         Always anonymous, edit your reviews, like other reviews,
-                        and save properties you're interested in.
+                        and save properties you're interested in. Also it's
+                        free.
                       </p>
                     </Fragment>
                   ) : (
                     <Fragment>
-                      <h3>{`Welcome back ${user.first_name}`}</h3>
-                      <p></p>
+                      <Link to='/me' className='stretched-link'>
+                        <h3 className='font-weight-bold'>
+                          <i class='fas fa-user'></i> Hey {user.first_name}
+                        </h3>
+                      </Link>
+                      <p className='font-weight-bold'>
+                        Edit all the reviews you have left, see reviews you
+                        like, and view your saved properties.
+                      </p>
                     </Fragment>
                   )}
                 </Card.Body>
@@ -46,11 +55,19 @@ const Landing = ({ auth: { user, loading } }) => {
               <Card
                 className='m-3 py-4'
                 style={{ width: "20rem", height: "15rem" }}
-                border='secondary'
+                border='danger'
                 bg='light'
               >
                 <Card.Body>
-                  <h3>hello</h3>
+                  <Link to='/search' className='stretched-link text-danger'>
+                    <h3 className='font-weight-bold '>
+                      <i class='fas fa-stream'></i>Add a Review
+                    </h3>
+                  </Link>
+                  <p className='font-weight-bold'>
+                    Simply look up a property, leave a review, and read what
+                    others thought about it.
+                  </p>
                 </Card.Body>
               </Card>
             </Col>
@@ -60,11 +77,19 @@ const Landing = ({ auth: { user, loading } }) => {
               <Card
                 className='m-3 py-4'
                 style={{ width: "20rem", height: "15rem" }}
-                border='secondary'
+                border='success'
                 bg='light'
               >
                 <Card.Body>
-                  <h3>hello</h3>
+                  <Link to='/' className='stretched-link text-success'>
+                    <h3 className='font-weight-bold '>
+                      <i class='fas fa-search'></i> Find Housing
+                    </h3>
+                  </Link>
+                  <p className='font-weight-bold'>
+                    Search for housing by your needs, save properties, and get
+                    connected with a landlord.
+                  </p>
                 </Card.Body>
               </Card>
             </Col>
@@ -72,11 +97,21 @@ const Landing = ({ auth: { user, loading } }) => {
               <Card
                 className='m-3 py-4'
                 style={{ width: "20rem", height: "15rem" }}
-                border='secondary'
+                border='warning'
                 bg='light'
               >
                 <Card.Body>
-                  <h3>hello</h3>
+                  <Link to='/' className='stretched-link text-warning'>
+                    <h3 className='font-weight-bold '>
+                      <small>
+                        <i class='fas fa-plus'></i>
+                      </small>
+                      <i class='fas fa-home'></i> Add a Property
+                    </h3>
+                  </Link>
+                  <p className='font-weight-bold'>
+                    Is a property not listed? Feel free to add it here.
+                  </p>
                 </Card.Body>
               </Card>
             </Col>

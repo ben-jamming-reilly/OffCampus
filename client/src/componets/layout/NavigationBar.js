@@ -46,12 +46,15 @@ const NavigationBar = ({
               </Nav.Item>
               <Nav.Item style={{ padding: "10px" }}>
                 <Link to='/search'>
-                  <i class='fas fa-home fa-2x'></i>
+                  <i class='fas fa-stream fa-2x'></i>
                 </Link>
               </Nav.Item>
               <Nav.Item style={{ padding: "10px" }}>
                 <Link to='/property/add/'>
-                  <i class='far fa-plus-square fa-2x'></i>
+                  <sup className='mt-0'>
+                    <i class='fas fa-plus'></i>
+                  </sup>
+                  <i class='fas fa-home fa-2x'></i>
                 </Link>
               </Nav.Item>
               {!isAuthenticated && (
