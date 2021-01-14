@@ -7,7 +7,7 @@ const db = require("../../utils/db");
 // Add/Update a review for a property
 router.post("/:zip/:city/:street", auth, async (req, res) => {
   const { zip, city, street } = req.params;
-  const { review, rating } = req.body;
+  const { body, rating } = req.body;
   const id = req.user.id;
 
   try {
@@ -22,18 +22,18 @@ router.post("/:zip/:city/:street", auth, async (req, res) => {
       // Update review
       await db.query(
         "UPDATE Review " +
-          "SET review = ?, rating = ? " +
+          "SET body = ?, rating = ? " +
           "WHERE user_id = ? AND zip = ? AND city = ? AND street = ?; ",
-        [review, rating, id, zip, city, street]
+        [body, rating, id, zip, city, street]
       );
 
       return res.status(200).json({ msg: "Review Updated!" });
     }
 
     await db.query(
-      "INSERT INTO Review (user_id, zip, city, street, review, rating) " +
+      "INSERT INTO Review (user_id, zip, city, street, body, rating) " +
         "VALUES (?, ?, ?, ?, ?, ?); ",
-      [id, zip, city, street, review, rating]
+      [id, zip, city, street, body, rating]
     );
 
     return res.status(201).json({ msg: "Review Added!" });
