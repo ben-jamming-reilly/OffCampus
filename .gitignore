@@ -3,4 +3,3 @@ uploads/*
 !uploads/doesntExist.jpg
 config/*
 !config/.gitkeep
-toAda.sh
