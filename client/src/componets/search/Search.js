@@ -21,8 +21,10 @@ const Search = ({
   searchHouses,
   houses: { houses, loading, page, endOfQuery },
 }) => {
-  const [sentQuery, setSentQuery] = useState(false);
-  const [hasSentQuery, setHasSentQuery] = useState(false);
+  const [sentQuery, setSentQuery] = useState(houses === [] ? false : true);
+  const [hasSentQuery, setHasSentQuery] = useState(
+    houses === [] ? false : true
+  );
   const [formData, setFormData] = useState({
     street: "",
     city: "Spokane",
@@ -44,9 +46,9 @@ const Search = ({
     e.preventDefault();
 
     if (hasSentQuery) {
-      searchHouses(formData, page);
+      await searchHouses(formData, page);
     } else {
-      searchHouses(formData, 0);
+      await searchHouses(formData, 0);
     }
 
     setSentQuery(true);
@@ -123,7 +125,7 @@ const Search = ({
                 </Col>
               ))}
 
-              {loading && (
+              {loading && !sentQuery && !hasSentQuery && (
                 <Col xs='12' className='text-center'>
                   <br />
                   <Spinner animation='border' />

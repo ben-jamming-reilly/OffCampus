@@ -23,6 +23,7 @@ export const newProperty = (formData, file, history) => async (dispatch) => {
     dispatch(setAlarm(res.data.msg, "success"));
   } catch (err) {
     const errors = err.response.data.errors;
+    dispatch(setAlarm("You must be logged in to post a property.", "danger"));
     if (errors) {
       console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));

@@ -45,7 +45,7 @@ const House = ({ data, showLink }) => {
               />
             )}
           </Col>
-          <Col className='my-auto ml-1'>
+          <Col className='my-auto mx-2'>
             <ListGroup variant='flush' className='py-0 '>
               {data.rent && (
                 <ListGroup.Item className='py-1'>
@@ -78,6 +78,13 @@ const House = ({ data, showLink }) => {
               )}
             </ListGroup>
           </Col>
+          {data.landlord_id !== undefined && data.landlord_id !== null && (
+            <Col xs='12' sm='2' md='2' lg='2' className='my-auto'>
+              <Link to={`/landlord/${data.landlord_id}`}>
+                <i class='fas fa-address-card fa-2x'></i>
+              </Link>
+            </Col>
+          )}
         </Card.Body>
       </Card>
     </div>
