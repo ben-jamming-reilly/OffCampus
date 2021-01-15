@@ -105,3 +105,10 @@ DROP COLUMN last_login_date;
 UPDATE User
 SET last_login_date = NOW() 
 WHERE user_id = ?
+
+
+INSERT INTO Landlord 
+    (landlord_id, user_id, company_name, phone, email, street, city, zip, file_name) 
+VALUES
+    ("aee0e078-56c4-11eb-ae93-0242ac130002", "60c18064-8947-463b-adfa-20b28bddbfe3", "Ben Testing LLC", "555 555 5555", "test@test.com", "123 S ABC RD", "SPOKANE", "99207", "testlandlord.jpg");
+
