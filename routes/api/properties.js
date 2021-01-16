@@ -27,8 +27,8 @@ router.get("/:zip/:city/:street", async (req, res) => {
       rows,
       fields,
     ] = await db.query(
-      "SELECT street, city, zip, state, type, next_lease_date, beds, baths, " +
-        "area, rent, file_name, pic_link, verified " +
+      "SELECT street, city, zip, landlord_id, state, type, next_lease_date, " +
+        "beds, baths, area, rent, file_name, pic_link, verified " +
         "FROM Property WHERE street = ? AND city = ? AND zip = ?; ",
       [street, city, zip]
     );
@@ -246,8 +246,12 @@ router.get("/search/:zip/:city/:street/:page", async (req, res) => {
   try {
     let endOfQuery = false;
 
-    let [rows, fields] = await db.query(
-      "SELECT * " +
+    let [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT street, city, zip, state, type, next_lease_date, " +
+        "beds, baths, area, rent, file_name, pic_link, verified " +
         "FROM Property " +
         "WHERE SOUNDEX(street) LIKE CONCAT('%', SUBSTRING(SOUNDEX(?), 2), '%') AND city = ? AND zip = ? " +
         "ORDER BY ABS(CAST(SUBSTRING(street, 1, 4) AS SIGNED) - CAST(SUBSTRING( ?, 1, 4) AS SIGNED))" +
@@ -259,6 +263,63 @@ router.get("/search/:zip/:city/:street/:page", async (req, res) => {
     else rows.pop();
 
     return res.status(200).json({ properties: rows, endOfQuery: endOfQuery });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server Error");
+  }
+});
+
+router.get("/saved", auth, async (req, res) => {
+  const id = req.user.id;
+  try {
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "SELECT street, city, zip, landlord_id, state, type, next_lease_date, " +
+        "beds, baths, area, rent, file_name, pic_link, verified " +
+        "FROM SaveProperty JOIN Property USING(street, city, zip) " +
+        "WHERE user_id = ? ; ",
+      [id]
+    );
+
+    return res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server Error");
+  }
+});
+
+router.post("/saved", auth, async (req, res) => {
+  const id = req.user.id;
+
+  const { street, city, zip } = req.body;
+
+  try {
+    const [
+      rows,
+      fields,
+    ] = await db.query(
+      "INSERT INTO SavedProperty(user_id, street, city, zip) VALUES (?, ?, ?, ?)",
+      [id, street, city, zip]
+    );
+    return res.status(200).json(rows);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Server Error");
+  }
+});
+
+router.delete("/saved/:zip/:city/:street", auth, async (req, res) => {
+  const id = req.user.id;
+  const { street, city, zip } = req.params;
+
+  try {
+    await db.query(
+      "DELETE FROM SavedProperty WHERE user_id = ? AND street = ? AND city = ? AND zip = ? ",
+      [id, street, city, zip]
+    );
+    return res.status(200).json(rows);
   } catch (err) {
     console.error(err);
     return res.status(500).send("Server Error");

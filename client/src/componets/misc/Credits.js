@@ -56,7 +56,8 @@ const Credits = () => {
             Additional Help By: Nick Smith
           </h3>
           <p>
-            Designed favicons, added additional styling, and pentested the WAPP
+            Designed favicons, added additional styling, pentested, and helped
+            with dev ops.
           </p>
           <p>
             <a href='https://github.com/TheGentlemanCoder'>
