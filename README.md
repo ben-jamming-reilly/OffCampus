@@ -46,6 +46,16 @@ A simple web app to for college students to find cheap affordable off-campus hou
   - Only for development are we running a mysql server locally, officially off of gonzaga :). I have a file which contains all of the Data from the cps-database. If others join I will add them later.
   - I am sticking with MySQL for now, although I hope to change that. Plans are to deploy initially with MySQL or MariaDB, the first MVP, then finally switching the code base to Postgres afterwards.
 
+## Server Droplet Configuration/Info
+
+- Current Users for the Server
+  - dev: for devop troglodytes who need to do routine server management, ie anything with pm2, mysql server, dependencies, nginx, etc...
+  - git: for programmers who want to update the website. Keep in mind they will only have access to the headless git repo that will be in sync with the master branch on github.
+  - root: this is only for me. Because I want the power and its my server, me, me, me!
+- MySQL users
+  - 'dev'@'localhost': used as the user admin account for the production DB
+  - 'git'@'localhost': used as the production account for the running WAP, reduced priviledges
+
 ## To Run
 
 - To Run both client and server
