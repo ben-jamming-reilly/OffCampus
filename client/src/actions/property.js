@@ -1,10 +1,12 @@
 import axios from "axios";
-import { GET_HOUSE, GET_HOUSE_ERR, LOADING_HOUSES } from "./types";
-
+import {
+  GET_SAVED_PROPERTIES,
+  SAVE_PROPERTY,
+  REMOVE_SAVED_PROPERTY,
+} from "./types";
 import { setAlarm } from "./alarm";
 
 export const newProperty = (formData, file, history) => async (dispatch) => {
-  console.log("Hello from here");
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -31,43 +33,49 @@ export const newProperty = (formData, file, history) => async (dispatch) => {
   }
 };
 
-export const newParcelProperty = (formData, property, history) => async (
-  dispatch
-) => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  const body = JSON.stringify({ formData, property });
-
+export const getSavedProperties = () => async (dispatch) => {
   try {
-    const res = await axios.post("/api/properties/parcel", body, config);
+    const res = await axios.get("/api/properties/saved");
 
-    history.push(
-      `/property/${property.zip}/${property.city}/${property.street}`
-    );
-    dispatch(setAlarm(res.data.msg, "success"));
+    dispatch({
+      type: GET_SAVED_PROPERTIES,
+      payload: res.data,
+    });
   } catch (err) {
     if (err.response) {
       const errors = err.response.data.errors;
-      console.error(errors);
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
     }
   }
 };
 
-export const getParcelProperty = (formData) => async (dispatch) => {
-  dispatch({ type: LOADING_HOUSES });
+export const saveProperty = () => async (dispatch) => {
   try {
-    const res = await axios.get(
-      `/api/properties/parcel/${formData.zip}/${formData.city}/${formData.street}`
+    const res = await axios.post("/api/properties/saved");
+
+    dispatch({
+      type: SAVE_PROPERTY,
+      payload: res.data,
+    });
+  } catch (err) {
+    if (err.response) {
+      const errors = err.response.data.errors;
+      errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));
+    }
+  }
+};
+
+export const deleteSavedProperty = (property) => async (dispatch) => {
+  try {
+    await axios.delete(
+      `/api/properties/saved/${property.zip}/${property.city}/${property.zip}`
     );
 
-    dispatch({ type: GET_HOUSE, payload: res.data });
+    dispatch({
+      type: REMOVE_SAVED_PROPERTY,
+      payload: property,
+    });
   } catch (err) {
-    dispatch({ type: GET_HOUSE_ERR });
     if (err.response) {
       const errors = err.response.data.errors;
       errors.forEach((error) => dispatch(setAlarm(error.msg, error.type)));

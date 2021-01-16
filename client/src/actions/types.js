@@ -17,6 +17,11 @@ export const GET_HOUSES_ERR = "GET_HOUSES_ERR";
 export const GET_HOUSE_ERR = "GET_HOUSE_ERR";
 export const LOADING_HOUSES = "LOADING_HOUSES";
 
+// Saved Houses
+export const GET_SAVED_PROPERTIES = "GET_SAVED_PROPERTIES";
+export const SAVE_PROPERTY = "SAVE_PROPERTY";
+export const REMOVE_SAVED_PROPERTY = "REMOVE_SAVED_PROPERTY";
+
 // Review
 export const GET_REVIEWS = "GET_REVIEWS";
 export const LIKE_REVIEW = "LIKE_REVIEW";
