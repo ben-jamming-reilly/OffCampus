@@ -3,3 +3,4 @@ uploads/*
 !uploads/doesntExist.jpg
 config/*
 !config/.gitkeep
+!config/production.json

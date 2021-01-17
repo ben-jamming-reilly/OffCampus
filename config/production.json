@@ -1,0 +1,9 @@
+{
+    "captcha_site_key": "6LfkPCEaAAAAAErMd08ve2nZ48ZSqhMMuJurQxH3",
+    "captcha_secret_key": "6LfkPCEaAAAAAI2sFFQYZTtyG5ot1GjWIxzcau0_",
+    "db_host": "127.0.0.1",
+    "db_user": "git",
+    "db_password": "MMD4i0hJEUjQY2go!",
+    "db": "OffCampus",
+    "jwtSecret": "OnlyChadsUseEmacs"
+}
