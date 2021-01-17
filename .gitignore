@@ -4,3 +4,4 @@ uploads/*
 config/*
 !config/.gitkeep
 !config/production.json
+!config/development.json
