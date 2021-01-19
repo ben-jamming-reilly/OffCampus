@@ -11,7 +11,6 @@ app.use("/api/properties", require("./routes/api/properties"));
 app.use("/api/reviews", require("./routes/api/reviews"));
 app.use("/api/users", require("./routes/api/users"));
 
-console.log(process.env);
 if (process.env.NODE_ENV === "production") {
   //set static file
   app.use(express.static("client/build"));
